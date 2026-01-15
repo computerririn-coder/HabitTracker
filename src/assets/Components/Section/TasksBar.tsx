@@ -7,17 +7,39 @@ import AddNewTab from "./addNewTab";
 
 export const TabNumberContext = createContext(null);
 
-function TabBar({ name, id, isActive, tabCount }) {
+function TabBar({ name, id, isActive,tabs, setTabs,  tabCount, currentTab, setCurrentTab}) {
+function deleteItem(id, tabs, setTabs, currentTab, setCurrentTab){
+    try {
+        const newTabs = tabs.filter(tab => tab.id !== id).map((tab, index) => ({ ...tab, id: index }));
+        
+
+        if (newTabs.length === 0) {
+            throw new Error("Cannot delete the last tab");
+        }
+                if (currentTab === id) {
+            setCurrentTab(e => e - 1);
+        }
+        setTabs(newTabs);
+    } catch (error) {
+        console.error("Error deleting tab:", error);
+        alert("Cannot delete the last remaining tab!");
+        return; // Add this
+    }
+}
+
     return (
         <>
 <div className="relative px-4  rounded-t-xl max-w-48 h-8 flex flex-row items-center  bg-gray-800 hover:bg-gray-750 transition-colors cursor-pointer shadow-lg">
   <div className="flex items-center  flex-1 min-w-0">
     <div className="w-4 h-4 rounded-full bg-blue-500 flex-shrink-0"></div>
-    <span className="text-sm font-medium text-white truncate">{name}</span>
+    <span className="text-sm font-medium text-white truncate">{id + 1}: {name}</span>
   </div>
-  <button className="ml-2 w-5 h-5 rounded-full hover:bg-gray-600 flex items-center justify-center flex-shrink-0">
+<button className="ml-2 w-5 h-5 rounded-full hover:bg-gray-600 flex items-center justify-center flex-shrink-0 " onClick={(e) => {
+    e.stopPropagation();
+    deleteItem(id, tabs, setTabs, currentTab, setCurrentTab);
+}}>
     <span className="text-gray-400 text-lg leading-none">×</span>
-  </button>
+</button>
   
 </div>
 <div className={`w-[110%] h-2 rounded-t-md p-1 ml-[-5%] bg-blue-500 transition-all duration-300 ${
@@ -38,7 +60,8 @@ const [tabs, setTabs] = useState([
     name: "Water",
     hotKey: "F2+k",
     dateHistory: ["Sample", "Sample2"],
-  }
+  },
+  
 ]);
 
 
@@ -47,7 +70,7 @@ const [tabs, setTabs] = useState([
             <section className="w-full h-[5vh] bg-[#00008B] flex flex- items-center justify-start pl-10 gap-10">
                 {tabs.map(e => (
                     <div key={e.id} onClick={() => setCurrentTab(e.id)} className="pt-2">
-                        <TabBar name={e.name}  key={e.id} isActive={currentTab === e.id} tabCount={tabCount}/>
+                        <TabBar name={e.name}  key={e.id} isActive={currentTab === e.id} tabCount={tabCount} id={e.id} tabs={tabs} setTabs={setTabs} currentTab={currentTab} setCurrentTab={setCurrentTab}/>
                     </div>
                 ))}
                 <button className="bg-orange-600 rounded-2xl w-6" >+</button>
@@ -55,10 +78,9 @@ const [tabs, setTabs] = useState([
             </section>
                             <div className="w-screen h-1 bg-blue-500 absolute"></div>
             <MainSection/>
-            <AddNewTab/>+
+            <AddNewTab/>
         </TabNumberContext.Provider>
     );
 }
 
 export default TasksBar;
-//s
