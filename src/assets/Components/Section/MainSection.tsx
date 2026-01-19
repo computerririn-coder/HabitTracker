@@ -5,7 +5,7 @@ import { TabNumberContext } from "./TasksBar.tsx";
 import { useHotkeys } from "react-hotkeys-hook";
 import axios from "axios";
 
-function ProgressTracker({ name, current, max }) {
+function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }) {
     const percentage = Math.min(Math.round((current / max) * 100), 100);
 
     // needs fixing if api returns error use my local quotes instead
@@ -26,19 +26,20 @@ function ProgressTracker({ name, current, max }) {
     */
 
     return (
-        <div className="w-full md:h-full h-[20rem] bg-gray-800 rounded-lg border-2 border-gray-700 overflow-hidden relative">
+<div className=" w-full md:h-full h-[20rem] rounded-lg border-4 border-cyan-500/30 overflow-hidden relative bg-gradient-to-br 
+        from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20 flex flex-col ">
             {/* Progress pill at top */}
-            <div className="w-[40%] bg-gray-800 rounded-full px-8 py-6 border-2 border-gray-700 mx-auto flex flex-row justify-center items-center mt-5 relative z-10">
-                <div className="text-center">
-                    <span className="font-bold text-white">{current}</span>
-                    <span className="text-gray-400 mx-2">/</span>
-                    <span className="font-bold text-gray-400">{max}</span>
+            <div className="w-[40%] bg-slate-900/50 rounded-full px-8 py-6 border border-cyan-700/50 mx-auto flex flex-row justify-center items-center mt-5 relative z-10 ">
+                <div className="text-center ">
+                    <span className="font-bold text-cyan-50">{current}</span>
+                    <span className="text-cyan-400 mx-2">/</span>
+                    <span className="font-bold text-cyan-400">{max}</span>
                 </div>
             </div>
 
             {/* Water fill */}
             <div
-                className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-blue-500 via-blue-400 to-cyan-400 transition-all duration-500 ease-out"
+                className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-500 ease-out"
                 style={{ height: `${percentage}%` }}
             >
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 to-transparent" />
@@ -46,14 +47,23 @@ function ProgressTracker({ name, current, max }) {
 
             {/* Percentage text */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="text-2xl font-bold text-white drop-shadow-lg">
+                <span className="text-2xl font-bold text-cyan-50 drop-shadow-lg">
                     {percentage}%
                 </span>
             </div>
 
+            {/* Manual Increase button */}
+            <div className="absolute bottom-16 left-0 right-0 flex justify-center z-10">
+                <button className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
+                 text-cyan-50 font-semibold rounded-lg border border-cyan-400 shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
+                 onClick={() => incrementProgressBar(hotKey)}>
+                    Manual Increase
+                </button>
+            </div>
+
             {/* Tracker title */}
             <div className="absolute bottom-4 left-0 right-0">
-                <h2 className="text-2xl font-bold text-white text-center">
+                <h2 className="text-2xl font-bold text-cyan-50 text-center">
                     quotes
                 </h2>
             </div>
@@ -64,13 +74,13 @@ function ProgressTracker({ name, current, max }) {
 /* Top-left small box */
 function Box1({ currentSetting }) {
     return (
-        <div className="bg-gray-800 rounded-lg border-2 border-gray-700 h-full p-4 flex flex-col gap-2">
-            <h1 className="text-sm text-gray-400 uppercase tracking-wide">
+        <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-2 shadow-lg shadow-cyan-500/10">
+            <h1 className="text-sm text-cyan-300 uppercase tracking-wide">
                 Current Setting
             </h1>
 
-            <div className="flex-1 flex items-center justify-center rounded-xl bg-gray-900 border border-gray-700">
-                <span className="text-4xl font-bold text-white">
+            <div className="flex-1 flex items-center justify-center rounded-xl bg-slate-900/50 border border-cyan-700/50">
+                <span className="text-4xl font-bold text-cyan-50">
                     {currentSetting}
                 </span>
             </div>
@@ -78,38 +88,38 @@ function Box1({ currentSetting }) {
     );
 }
 
-function Box2({ dateHistory }) {
+function Box2({ dateHistory,  }) {
     const colors = [
+        "border-l-cyan-500 bg-cyan-500/10",
         "border-l-blue-500 bg-blue-500/10",
         "border-l-purple-500 bg-purple-500/10",
-        "border-l-pink-500 bg-pink-500/10",
     ];
 
     return (
-        <div className="bg-gray-800 rounded-lg border-2 border-gray-700 h-full p-4">
-            <h1 className="text-sm text-gray-400 uppercase tracking-wide pb-4">
+        <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 shadow-lg shadow-cyan-500/10">
+            <h1 className="text-sm text-cyan-300 uppercase tracking-wide pb-4">
                 Most Recent Task Completion History
             </h1>
 
             <div className="space-y-2">
-                {dateHistory.slice(0, 3).map((e, i) => (
+                {dateHistory.slice(0, 2).map((e, i) => (
                     <div
                         key={i}
                         className={`
-                            flex items-center gap-4 rounded-lg p-4 border-l-4 border-y border-r border-gray-700
-                            bg-gray-800/40
+                            flex items-center gap-4 rounded-lg p-4 border-l-4 border-y border-r border-cyan-700/50
+                            bg-slate-900/40
                             ${colors[i]}
                         `}
                     >
-                        <span className="text-gray-500 text-sm font-semibold min-w-[24px]">
+                        <span className="text-cyan-400 text-sm font-semibold min-w-[24px]">
                             #{i + 1}
                         </span>
 
-                        <p className="text-gray-200 text-base font-medium flex-1">
+                        <p className="text-cyan-50 text-base font-medium flex-1">
                             {e}
                         </p>
 
-                        <span className="text-xs text-gray-500 uppercase">
+                        <span className="text-xs text-cyan-400 uppercase">
                             time
                         </span>
                     </div>
@@ -120,57 +130,63 @@ function Box2({ dateHistory }) {
 }
 
 /* Top-right box */
-function Box3({ name, current, max, currentSetting, dateHistory }) {
+function Box3({ name, current, max, currentSetting, dateHistory, setComponentVisibility }) {
     return (
-        <div className="bg-gray-800 rounded-lg border-2 border-gray-700 h-full p-2 flex flex-col gap-4">
-            <h1 className="text-sm text-gray-400 uppercase tracking-wide border-b border-gray-700 pb-2">
+        <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-2 flex flex-col gap-4 shadow-lg shadow-cyan-500/10">
+            <div className="flex flex-row"> 
+            <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
                 Current Configuration
             </h1>
-
+            <button className="ml-auto px-4 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
+             text-white text-sm font-medium rounded-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-200 transform hover:scale-105 active:scale-95"
+             onClick={() => setComponentVisibility(prev => ({...prev, editHotKey: true}))}>
+                Edit hotkey
+            </button>
+            </div>
             <div className="grid grid-rows-3 gap-4 flex-1">
-                <div className="row-span-1 bg-gray-900 rounded-lg px-4 py-3 border border-gray-700 flex items-center justify-center">
+                <div className="row-span-1 bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex items-center justify-center">
                     <div className="flex flex-col items-center">
-                        <span className="text-gray-400 text-xs uppercase tracking-wide mb-1">
+                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
                             Task Name
                         </span>
-                        <span className="font-bold text-white text-2xl">
+                        <span className="font-bold text-cyan-50 text-2xl">
                             {name}
                         </span>
                     </div>
                 </div>
 
                 <div className="row-span-1 grid grid-cols-2 gap-4">
-                    <div className="bg-gray-900 rounded-lg px-4 py-3 border border-gray-700 flex flex-col items-center justify-center">
-                        <span className="text-gray-400 text-xs uppercase tracking-wide mb-1">
+                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
+                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
                             Current Progress
                         </span>
-                        <span className="font-bold text-blue-400 text-xl">
+                        <span className="font-bold text-cyan-400 text-xl">
                             {current}
                         </span>
                     </div>
 
-                    <div className="bg-gray-900 rounded-lg px-4 py-3 border border-gray-700 flex flex-col items-center justify-center">
-                        <span className="text-gray-400 text-xs uppercase tracking-wide mb-1">
+                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
+                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
                             Daily Goal
                         </span>
-                        <span className="font-bold text-green-400 text-xl">
+                        <span className="font-bold text-blue-400 text-xl">
                             {max}
                         </span>
                     </div>
                 </div>
 
                 <div className="row-span-1 grid grid-cols-2 gap-4">
-                    <div className="bg-gray-900 rounded-lg px-4 py-3 border border-gray-700 flex flex-col items-center justify-center">
-                        <span className="text-gray-400 text-xs uppercase tracking-wide mb-1">
+                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
+                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
                             Hotkey
                         </span>
-                        <span className="font-mono font-bold text-white text-lg bg-gray-800 px-3 py-1 rounded border border-gray-600">
+                        <span className="font-mono font-bold text-cyan-50 text-lg bg-slate-900/70 px-3 py-1 rounded border border-cyan-700/50">
                             {currentSetting}
                         </span>
                     </div>
 
-                    <div className="bg-gray-900 rounded-lg px-4 py-3 border border-gray-700 flex flex-col items-center justify-center">
-                        <span className="text-gray-400 text-xs uppercase tracking-wide mb-1">
+                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
+                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
                             Total Completions
                         </span>
                         <span className="font-bold text-purple-400 text-xl">
@@ -186,9 +202,9 @@ function Box3({ name, current, max, currentSetting, dateHistory }) {
 /* Bottom full-width box */
 function Box4({ tabs, currentTab }) {
     return (
-        <div className="bg-gray-800 rounded-lg border-2 border-gray-700 h-full p-4 flex flex-col gap-3 overflow-auto">
-            <h1 className="text-sm text-gray-400 uppercase tracking-wide border-b border-gray-700 pb-2">
-                All Tasks Completion List
+        <div className=" from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-3 overflow-auto shadow-lg shadow-cyan-500/10">
+            <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
+                All Tasks List
             </h1>
 
             <div className="flex flex-wrap gap-3 content-start">
@@ -203,31 +219,31 @@ function Box4({ tabs, currentTab }) {
                         return (
                             <div
                                 key={i}
-                                className="w-[32.3%] bg-gray-900 rounded-lg border border-gray-700 flex flex-col gap-1"
+                                className="w-[32.3%] bg-slate-900/50 rounded-lg border border-cyan-700/50 flex flex-col gap-1"
                             >
                                 <div className="flex items-center gap-2 px-3 pt-1">
-                                    <span className="text-gray-400 text-xs">
+                                    <span className="text-cyan-300 text-xs">
                                         Name:
                                     </span>
-                                    <span className="font-semibold text-white text-sm">
+                                    <span className="font-semibold text-cyan-50 text-sm">
                                         {e.name}
                                     </span>
                                 </div>
 
                                 <div className="flex items-center gap-2 px-3">
-                                    <span className="text-gray-400 text-xs">
+                                    <span className="text-cyan-300 text-xs">
                                         Hotkey:
                                     </span>
-                                    <span className="font-mono font-semibold text-white text-xs bg-gray-800 px-2 py-0.5 rounded border border-gray-600">
+                                    <span className="font-mono font-semibold text-cyan-50 text-xs bg-slate-900/70 px-2 py-0.5 rounded border border-cyan-700/50">
                                         {e.hotKey}
                                     </span>
                                 </div>
 
                                 <div className="flex items-center gap-2 px-3 pb-1">
-                                    <span className="text-gray-400 text-xs">
+                                    <span className="text-cyan-300 text-xs">
                                         Progress:
                                     </span>
-                                    <span className="font-semibold text-blue-400 text-sm">
+                                    <span className="font-semibold text-cyan-400 text-sm">
                                         {percentage}%
                                     </span>
                                 </div>
@@ -240,45 +256,53 @@ function Box4({ tabs, currentTab }) {
 }
 
 function MainSection() {
-    const { currentTab, setCurrentTab, tabs, setTabs } = useContext(TabNumberContext);
+    const { currentTab, setCurrentTab, tabs, setTabs, setComponentVisibility } = useContext(TabNumberContext);
 
     const hotKeys = tabs.map((e) => e.hotKey);
 
-    const incrementTabCurrent = (tabId: number) => {
-        setTabs((prevTabs) =>
-            prevTabs.map((tab) =>
-                tab.id === tabId
-                    ? {
-                          ...tab,
-                          current: Math.min(tab.current + 1, tab.max),
-                      }
+function incrementProgressBar(pressedKey) {
+    const hotkey = pressedKey.toUpperCase().replace(/\s+/g, "");
+    const foundTab = tabs.find(tab => tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey);
+    const date = 1
+        setTabs((prevTabs) => 
+            prevTabs.map((tab) => 
+                tab.id === foundTab.id 
+                    ? { ...tab, current: tab.current + 1 <= tab.max ? tab.current + 1 : tab.current,  dateHistory: [new Date().toLocaleString(), ...tab.dateHistory] }
                     : tab
             )
         );
-    };
 
-    useHotkeys(hotKeys, () => {
-        alert("Ctrl+K pressed!");
-        console.log(tabs[currentTab].dateHistory[1]);
-        incrementTabCurrent(0);
-    });
+}
+
+useHotkeys(hotKeys, (event, handler) => {
+    incrementProgressBar(handler.keys.join('+'));
+});
+
+    //testing
+    useEffect(() => {
+console.log(tabs[0])
+    }, [])
 
     return (
-        <section className="w-full min-h-[85vh] pb-6 md:pb-4 bg-gray-900 px-8">
-            <div className="max-w-7xl mx-auto flex flex-col gap-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 flex-1 pt-10">
-                    <div className="col-span-1 h-full">
-                        <ProgressTracker
-                            name={tabs[currentTab].name}
-                            current={tabs[currentTab].current}
-                            max={tabs[currentTab].max}
-                        />
+        <section className="w-full min-h-[85vh] pb-6 md:pb-4 bg-slate-950 px-8 ">
+            <div className="  flex flex-col gap-6 ">
+                <div className="grid grid-cols-1 xl:grid-cols-3  flex-1 pt-10 gap-10">
+                    <div className="col-span-1 h-60   xl:h-full w-full md:w-[104%] xl:w-full mx-auto ">
+<ProgressTracker
+    name={tabs[currentTab].name}
+    current={tabs[currentTab].current}
+    max={tabs[currentTab].max}
+    incrementProgressBar={incrementProgressBar}
+    tabs={tabs}
+    currentTab={currentTab}
+    hotKey={tabs[currentTab].hotKey}
+/>
                     </div>
 
-                    <div className="col-span-1 md:col-span-2 grid grid-rows-2 gap-6 h-full">
-                        <div className="row-span-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="col-span-1 md:col-span-2 grid grid-rows-2 gap-6 h-full w-full ">
+                        <div className="row-span-1 grid grid-cols-1 md:grid-cols-2 gap-6  ">
                             <div className="grid grid-rows-3 gap-6">
-                                <div className="row-span-2">
+                                <div className="row-span-2 pt-15 md:pt-0">
                                     <Box1
                                         currentSetting={
                                             tabs[currentTab].hotKey
@@ -301,6 +325,7 @@ function MainSection() {
                                 current={tabs[currentTab].current}
                                 max={tabs[currentTab].max}
                                 currentSetting={tabs[currentTab].hotKey}
+                                setComponentVisibility={setComponentVisibility}
                             />
                         </div>
 

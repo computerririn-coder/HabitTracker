@@ -1,31 +1,32 @@
+import { Zap, Award } from 'lucide-react';
+
 function NavigationBar() {
   return (
-<nav className="w-full h-14 bg-[#2196f3] flex items-center justify-between px-6">
-  {/* Logo */}
-<div className="min-w-42 h-9 flex items-center gap-2 bg-gradient-to-r from-blue-800 to-cyan-600 rounded-2xl pr-3">
-  <div className="w-8 h-9 bg-blue-500 rounded-md flex items-center justify-center">
-    <span className="text-white font-bold text-lg">✓</span>
-  </div>
-  <span className="text-md md:text-xl font-extrabold text-slate-100 ">Task Tracker</span>
-</div>
+    <nav className="w-full h-14 bg-gradient-to-r from-slate-900 to-slate-950 flex items-center justify-between px-6 border-b border-cyan-500/30 shadow-lg shadow-cyan-500/10">
+      {/* Logo */}
+      <div className="min-w-42 h-9 flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-2xl pr-3 shadow-lg shadow-cyan-500/30">
+        <div className="w-8 h-9 bg-cyan-500 rounded-md flex items-center justify-center">
+          <span className="text-white font-bold text-lg">✓</span>
+        </div>
+        <span className="text-md md:text-xl font-extrabold text-cyan-50">Task Tracker</span>
+      </div>
 
+      {/* Stats */}
+      <div className="flex items-center gap-4">
+        {/* 7 Day Streak */}
+        <div className="flex items-center gap-2 bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 rounded-lg px-3 py-1.5 hover:from-orange-500/30 hover:to-yellow-500/30 transition-all">
+          <Zap className="w-4 h-4 text-yellow-400" />
+          <span className="text-sm font-semibold text-orange-300">Achievements</span>
+        </div>
 
-</nav>
-
+        {/* 156 Total Completions */}
+        <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg px-3 py-1.5 hover:from-purple-500/30 hover:to-pink-500/30 transition-all">
+          <Award className="w-4 h-4 text-purple-400" />
+          <span className="text-sm font-semibold text-purple-300">X completions</span>
+        </div>
+      </div>
+    </nav>
   );
 }
 
 export default NavigationBar;
-
-{/*
-    <ul className="flex space-x-6 text-white flex-row items-center justify-center text-sm">
-    <li className="bg-white text-[#2196f3] px-4 py-1 rounded-4xl hover:bg-gray-100 border-4 border-blue-500">Customization</li>
-    <li className="bg-white text-[#2196f3] px-4 py-1 rounded-2xl hover:bg-gray-100 border-4 border-blue-500">Instruction</li>
-  </ul>
-
-  <div className="flex items-center space-x-3">
-    <button className="bg-white text-[#2196f3] px-4 py-1 rounded-md hover:bg-gray-100">
-      Log In
-    </button>
-  </div>
-  */} 
