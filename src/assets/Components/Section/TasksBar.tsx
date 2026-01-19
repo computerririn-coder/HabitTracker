@@ -4,6 +4,7 @@ import { useState, createContext, useEffect } from "react";
 import MainSection from "./MainSection";
 import AddNewTab from "./addNewTab";
 import EditHotkey from "./editHotkey";
+import { useComponentVisibility } from "./store";
 
 export const TabNumberContext = createContext(null);
 
@@ -77,10 +78,11 @@ function TabBar({
 }
 
 function TasksBar() {
-    const [componentVisibility, setComponentVisibility] = useState({
-        addNewTab: false,
-        editHotKey: false,
-    });
+//from store(zustand)
+const componentVisibility = useComponentVisibility((state) => state.componentVisibility)
+const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
+
+
     const [currentTab, setCurrentTab] = useState(() => {
         const saveCurrentTab = localStorage.getItem("saveCurrentTab");
         return saveCurrentTab ? JSON.parse(saveCurrentTab) : 0
@@ -142,8 +144,8 @@ useEffect(() => {
 
                 <button 
                     className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110" 
-                    onClick={() => setComponentVisibility((prev) => ({
-                        ...prev,
+                    onClick={() => setComponentVisibility(({
+                        ...componentVisibility,
                         addNewTab: true,
                     }))}
                 >

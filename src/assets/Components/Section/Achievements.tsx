@@ -1,6 +1,9 @@
 // @ts-nocheck
 import { Award, Target, Zap, TrendingUp, Star, Trophy, Crown, Flame } from 'lucide-react';
 import { useState, useReducer, useEffect } from 'react';
+import { useStore } from './store'
+import { useComponentVisibility, } from './store';
+
 // Reusable Achievement Card Component
 function AchievementCard({ achievement }) {
     const Icon = achievement.icon;
@@ -38,44 +41,22 @@ function AchievementCard({ achievement }) {
 }
 
 function Achievements() {
-const [achievements, dispatch] = useReducer(reducer, [
-  {
-    id: 0,
-    name: "1st Timer",
-    description: "Create your first task",
-    icon: Target,
-    unlocked: true,
-    bgGradient: "from-cyan-500/20 to-cyan-600/20",
-    borderColor: "border-cyan-500/30",
-    iconColor: "text-cyan-400",
-  },
-]);
+//from store(zustand)
+const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
 
-function reducer(state, action) {
-  switch (action.type) {
-    case 'unlock':
-      return state.map(achievement => 
-        achievement.id === action.id 
-          ? { ...achievement, unlocked: false }
-          : achievement,
-      );
-    
-    default:
-      return state;
-  }
-}
-
-useEffect(() => {
-    console.log(achievements[0].unlocked)
-}, [achievements])
-
+    const achievements = useStore((state) => state.achievements);
+    const unlock = useStore((state) => state.unlock);
 
     const unlockedCount = achievements.filter(a => a.unlocked).length;
     const totalCount = achievements.length;
 
+        useEffect(() => {
+        console.log(achievements[0].unlocked)
+    }, [achievements])
+
     return (
         <section className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="w-full max-w-4xl max-h-[90vh] bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 overflow-hidden flex flex-col">
+            <div className="w-full max-w-4xl max-h-[90vh] bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20  flex flex-col">
                 {/* Header */}
                 <div className="relative p-6 border-b border-cyan-500/20">
                     <div className="flex items-center justify-between">
@@ -84,12 +65,12 @@ useEffect(() => {
                                 Achievements
                             </h2>
                             <p className="text-cyan-500/70 text-sm mt-1">
-                                {unlockedCount} of {totalCount} unlocked
+                                {unlockedCount} of {totalCount}
                             </p>
                         </div>
-                        <button onClick={() => dispatch({ type: 'unlock', id: 0 })}>
-  Lock Achievement
-</button>
+                        <button onClick={() => unlock(1)}>
+                            Unlock
+                        </button>
 
                         <div className="flex items-center gap-3">
                             <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 rounded-lg px-4 py-2">
@@ -100,8 +81,9 @@ useEffect(() => {
                         </div>
                     </div>
                     <button 
-                        className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 hover:bg-red-500/30 text-red-400 hover:text-red-300 border border-red-500/30 transition-all duration-200 hover:scale-110"
-                    >
+                        className="absolute top-[-1rem] right-[-1rem] w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 hover:bg-red-500 text-red-400 
+                        hover:text-red-300 border border-red-500/30 transition-all duration-200 hover:scale-110 "
+                    onClick={() => setComponentVisibility( prev => ({...prev, achievementsVisibility: false}))}>
                         ×
                     </button>
                 </div>

@@ -3,8 +3,14 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
+import { useStore, useTotalTabCreatedCount } from './store'
 
 function AddNewTab({ setComponentVisibility }) {
+    //From store(zustand)
+   const unlock = useStore((state) => state.unlock);
+   const totalTabCreatedCount = useTotalTabCreatedCount((state) => state.totalTabCreatedCount)
+   const incrementTabCount = useTotalTabCreatedCount((state) => state.incrementTabCount)
+
     const { currentTab, tabs, setTabs, tabCount, setTabCount } = useContext(TabNumberContext);
     const [existingKeyMsg, setExistingKeyMsg] = useState(false);
     const [userInput, setUserInput] = useState({});
@@ -17,7 +23,7 @@ function AddNewTab({ setComponentVisibility }) {
             hotKey2: "Q",
         },
     });
-
+     
     const onSubmit = (data) => {
         const newHotKey = `${data.hotKey}+${data.hotKey2}`;
         const existingHotKeys = tabs.map(e => e.hotKey);
@@ -27,6 +33,12 @@ function AddNewTab({ setComponentVisibility }) {
             return;
         } else {
             setExistingKeyMsg(false);
+        }
+
+        if(totalTabCreatedCount === 0){
+         unlock(1);
+         window.alert("Achievement Unlock");
+         incrementTabCount();
         }
 
         const newTab = {
@@ -48,7 +60,9 @@ function AddNewTab({ setComponentVisibility }) {
         }));
     };
 
-
+useEffect(() => {
+console.log(totalTabCreatedCount)
+}, [])
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 ">
@@ -58,6 +72,7 @@ function AddNewTab({ setComponentVisibility }) {
                     <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
                         Create New Task
                     </h2>
+                    
                     <button
                         className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 hover:bg-red-500/30 text-red-400 hover:text-red-300 border border-red-500/30 transition-all duration-200 hover:scale-110"
                         onClick={() =>

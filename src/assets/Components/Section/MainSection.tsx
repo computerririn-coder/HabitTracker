@@ -137,6 +137,15 @@ function Box3({ name, current, max, currentSetting, dateHistory, setComponentVis
             <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
                 Current Configuration
             </h1>
+            <button
+  onClick={() => {
+    localStorage.clear();
+    window.location.reload();
+  }}
+>
+  Clear
+</button>
+
             <button className="ml-auto px-4 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
              text-white text-sm font-medium rounded-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-200 transform hover:scale-105 active:scale-95"
              onClick={() => setComponentVisibility(prev => ({...prev, editHotKey: true}))}>
