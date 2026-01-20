@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { TabNumberContext } from "./TasksBar.tsx";
 import { useHotkeys } from "react-hotkeys-hook";
 import axios from "axios";
+import { useStore, useComponentVisibility } from "./store.ts";
+import { motion } from "framer-motion";
 
 function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }) {
     const percentage = Math.min(Math.round((current / max) * 100), 100);
@@ -26,8 +28,10 @@ function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }) {
     */
 
     return (
-<div className=" w-full md:h-full h-[20rem] rounded-lg border-4 border-cyan-500/30 overflow-hidden relative bg-gradient-to-br 
-        from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20 flex flex-col ">
+        <div
+            className=" w-full md:h-full h-[20rem] rounded-lg border-4 border-cyan-500/30 overflow-hidden relative bg-gradient-to-br 
+        from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20 flex flex-col "
+        >
             {/* Progress pill at top */}
             <div className="w-[40%] bg-slate-900/50 rounded-full px-8 py-6 border border-cyan-700/50 mx-auto flex flex-row justify-center items-center mt-5 relative z-10 ">
                 <div className="text-center ">
@@ -54,9 +58,11 @@ function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }) {
 
             {/* Manual Increase button */}
             <div className="absolute bottom-16 left-0 right-0 flex justify-center z-10">
-                <button className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
+                <button
+                    className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
                  text-cyan-50 font-semibold rounded-lg border border-cyan-400 shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
-                 onClick={() => incrementProgressBar(hotKey)}>
+                    onClick={() => incrementProgressBar(hotKey)}
+                >
                     Manual Increase
                 </button>
             </div>
@@ -76,7 +82,7 @@ function Box1({ currentSetting }) {
     return (
         <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-2 shadow-lg shadow-cyan-500/10">
             <h1 className="text-sm text-cyan-300 uppercase tracking-wide">
-                Current Setting
+                Current HotKey
             </h1>
 
             <div className="flex-1 flex items-center justify-center rounded-xl bg-slate-900/50 border border-cyan-700/50">
@@ -88,7 +94,7 @@ function Box1({ currentSetting }) {
     );
 }
 
-function Box2({ dateHistory,  }) {
+function Box2({ dateHistory }) {
     const colors = [
         "border-l-cyan-500 bg-cyan-500/10",
         "border-l-blue-500 bg-blue-500/10",
@@ -130,28 +136,36 @@ function Box2({ dateHistory,  }) {
 }
 
 /* Top-right box */
-function Box3({ name, current, max, currentSetting, dateHistory, setComponentVisibility }) {
+function Box3({
+    name,
+    current,
+    max,
+    currentSetting,
+    dateHistory,
+    componentVisibility,
+    setComponentVisibility,
+}) {
     return (
         <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-2 flex flex-col gap-4 shadow-lg shadow-cyan-500/10">
-            <div className="flex flex-row"> 
-            <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
-                Current Configuration
-            </h1>
-            <button
-  onClick={() => {
-    localStorage.clear();
-    window.location.reload();
-  }}
->
-  Clear
-</button>
+            <div className="flex flex-row">
+                <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
+                    Current Configuration
+                </h1>
 
-            <button className="ml-auto px-4 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
+                <button
+                    className="ml-auto px-4 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
              text-white text-sm font-medium rounded-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-200 transform hover:scale-105 active:scale-95"
-             onClick={() => setComponentVisibility(prev => ({...prev, editHotKey: true}))}>
-                Edit hotkey
-            </button>
+                    onClick={() =>
+                        setComponentVisibility({
+                            ...componentVisibility,
+                            editHotKey: true,
+                        })
+                    }
+                >
+                    Edit hotkey
+                </button>
             </div>
+
             <div className="grid grid-rows-3 gap-4 flex-1">
                 <div className="row-span-1 bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex items-center justify-center">
                     <div className="flex flex-col items-center">
@@ -265,89 +279,163 @@ function Box4({ tabs, currentTab }) {
 }
 
 function MainSection() {
-    const { currentTab, setCurrentTab, tabs, setTabs, setComponentVisibility } = useContext(TabNumberContext);
+    //from store(zustand)
+    const componentVisibility = useComponentVisibility(
+        (state) => state.componentVisibility
+    );
+    const setComponentVisibility = useComponentVisibility(
+        (state) => state.setComponentVisibility
+    );
+    const achievements = useStore((state) => state.achievements);
+    const unlock = useStore((state) => state.unlock);
+
+    const { currentTab, setCurrentTab, tabs, setTabs } =
+        useContext(TabNumberContext);
 
     const hotKeys = tabs.map((e) => e.hotKey);
 
-function incrementProgressBar(pressedKey) {
-    const hotkey = pressedKey.toUpperCase().replace(/\s+/g, "");
-    const foundTab = tabs.find(tab => tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey);
-    const date = 1
-        setTabs((prevTabs) => 
-            prevTabs.map((tab) => 
-                tab.id === foundTab.id 
-                    ? { ...tab, current: tab.current + 1 <= tab.max ? tab.current + 1 : tab.current,  dateHistory: [new Date().toLocaleString(), ...tab.dateHistory] }
+    function incrementProgressBar(pressedKey) {
+        const hotkey = pressedKey.toUpperCase().replace(/\s+/g, "");
+        const foundTab = tabs.find(
+            (tab) =>
+                tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey
+        );
+        const date = 1;
+
+        if (
+            foundTab &&
+            foundTab.current + 1 === foundTab.max &&
+            achievements[1].unlocked === false
+        ) {
+            window.alert("Achievement Unlocked: Complete A Task");
+            unlock(2);
+        }
+
+        setTabs((prevTabs) =>
+            prevTabs.map((tab) =>
+                tab.id === foundTab.id
+                    ? {
+                          ...tab,
+                          current:
+                              tab.current + 1 <= tab.max
+                                  ? tab.current + 1
+                                  : tab.current,
+                          dateHistory: [
+                              new Date().toLocaleString(),
+                              ...tab.dateHistory,
+                          ],
+                      }
                     : tab
             )
         );
+    }
 
-}
-
-useHotkeys(hotKeys, (event, handler) => {
-    incrementProgressBar(handler.keys.join('+'));
-});
+    useHotkeys(hotKeys, (event, handler) => {
+        incrementProgressBar(handler.keys.join("+"));
+    });
 
     //testing
     useEffect(() => {
-console.log(tabs[0])
-    }, [])
+        console.log(achievements);
+    }, []);
+
+    const [hasAnimated, setHasAnimated] = useState(() => {
+        return localStorage.getItem("hasAnimated") === "true";
+    });
+
+    useEffect(() => {
+        if (!hasAnimated) {
+            localStorage.setItem("hasAnimated", "true");
+            setHasAnimated(true);
+        }
+    }, []);
 
     return (
-        <section className="w-full min-h-[85vh] pb-6 md:pb-4 bg-slate-950 px-8 ">
-            <div className="  flex flex-col gap-6 ">
-                <div className="grid grid-cols-1 xl:grid-cols-3  flex-1 pt-10 gap-10">
-                    <div className="col-span-1 h-60   xl:h-full w-full md:w-[104%] xl:w-full mx-auto ">
-<ProgressTracker
-    name={tabs[currentTab].name}
-    current={tabs[currentTab].current}
-    max={tabs[currentTab].max}
-    incrementProgressBar={incrementProgressBar}
-    tabs={tabs}
-    currentTab={currentTab}
-    hotKey={tabs[currentTab].hotKey}
-/>
+       <section className="w-full min-h-[85vh] pb-6 md:pb-4 bg-slate-950 px-8 ">
+    <div className="  flex flex-col gap-6 ">
+        <div className="grid grid-cols-1 xl:grid-cols-3  flex-1 pt-10 gap-10">
+            
+            <motion.div 
+                className="col-span-1 h-60   xl:h-full w-full md:w-[104%] xl:w-full mx-auto "
+                initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+            >
+                <ProgressTracker
+                    name={tabs[currentTab].name}
+                    current={tabs[currentTab].current}
+                    max={tabs[currentTab].max}
+                    incrementProgressBar={incrementProgressBar}
+                    tabs={tabs}
+                    currentTab={currentTab}
+                    hotKey={tabs[currentTab].hotKey}
+                />
+            </motion.div>
+
+            <div className="col-span-1 md:col-span-2 grid grid-rows-2 gap-6 h-full w-full ">
+                <div className="row-span-1 grid grid-cols-1 md:grid-cols-2 gap-6  ">
+                    <div className="grid grid-rows-3 gap-6">
+                        <motion.div 
+                            className="row-span-2 pt-15 md:pt-0"
+                            initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                        >
+                            <Box1
+                                currentSetting={
+                                    tabs[currentTab].hotKey
+                                }
+                            />
+                        </motion.div>
+
+                        <motion.div 
+                            className="row-span-7"
+                            initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                        >
+                            <Box2
+                                dateHistory={
+                                    tabs[currentTab].dateHistory
+                                }
+                            />
+                        </motion.div>
                     </div>
 
-                    <div className="col-span-1 md:col-span-2 grid grid-rows-2 gap-6 h-full w-full ">
-                        <div className="row-span-1 grid grid-cols-1 md:grid-cols-2 gap-6  ">
-                            <div className="grid grid-rows-3 gap-6">
-                                <div className="row-span-2 pt-15 md:pt-0">
-                                    <Box1
-                                        currentSetting={
-                                            tabs[currentTab].hotKey
-                                        }
-                                    />
-                                </div>
-
-                                <div className="row-span-7">
-                                    <Box2
-                                        dateHistory={
-                                            tabs[currentTab].dateHistory
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            <Box3
-                                dateHistory={tabs[currentTab].dateHistory}
-                                name={tabs[currentTab].name}
-                                current={tabs[currentTab].current}
-                                max={tabs[currentTab].max}
-                                currentSetting={tabs[currentTab].hotKey}
-                                setComponentVisibility={setComponentVisibility}
-                            />
-                        </div>
-
-                        <div className="row-span-1">
-                            <Box4
-                                tabs={tabs}
-                                currentTab={currentTab}
-                            />
-                        </div>
-                    </div>
+                    <motion.div
+                        initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                    >
+                        <Box3
+                            dateHistory={tabs[currentTab].dateHistory}
+                            name={tabs[currentTab].name}
+                            current={tabs[currentTab].current}
+                            max={tabs[currentTab].max}
+                            currentSetting={tabs[currentTab].hotKey}
+                            componentVisibility={componentVisibility}
+                            setComponentVisibility={
+                                setComponentVisibility
+                            }
+                        />
+                    </motion.div>
                 </div>
+
+                <motion.div 
+                    className="row-span-1 "
+                    initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                    <Box4
+                        tabs={tabs}
+                        currentTab={currentTab}
+                    />
+                </motion.div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
     );
 }
 

@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 
 import { useState, createContext, useEffect } from "react";
 import MainSection from "./MainSection";

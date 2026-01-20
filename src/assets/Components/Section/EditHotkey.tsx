@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { set, useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
 
+
 function EditHotkey( ) {
     const { currentTab, setTabs, setComponentVisibility } = useContext(TabNumberContext);
 

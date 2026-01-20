@@ -12,6 +12,7 @@ import EditHotkey from './assets/Components/Section/editHotkey.tsx'
 import Achievements from './assets/Components/Section/Achievements.tsx'
 import { useComponentVisibility } from './assets/Components/Section/store.ts'
 
+
 function App() {
 const componentVisibility = useComponentVisibility((state) => state.componentVisibility)
 
