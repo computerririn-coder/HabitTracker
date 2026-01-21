@@ -1,13 +1,12 @@
-// @ts-nocheck
-
 import { useContext, useEffect, useState } from "react";
 import { TabNumberContext } from "./TasksBar.tsx";
 import { useHotkeys } from "react-hotkeys-hook";
 import axios from "axios";
 import { useStore, useComponentVisibility } from "./store.ts";
 import { motion } from "framer-motion";
+import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab, TabNumberContextValue  } from './store';
 
-function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }) {
+function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }: ProgressTrackerProps) {
     const percentage = Math.min(Math.round((current / max) * 100), 100);
 
     // needs fixing if api returns error use my local quotes instead
@@ -78,7 +77,7 @@ function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }) {
 }
 
 /* Top-left small box */
-function Box1({ currentSetting }) {
+function Box1({ currentSetting }: Box1Props) {
     return (
         <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-2 shadow-lg shadow-cyan-500/10">
             <h1 className="text-sm text-cyan-300 uppercase tracking-wide">
@@ -94,7 +93,7 @@ function Box1({ currentSetting }) {
     );
 }
 
-function Box2({ dateHistory }) {
+function Box2({ dateHistory }: Box2Props) {
     const colors = [
         "border-l-cyan-500 bg-cyan-500/10",
         "border-l-blue-500 bg-blue-500/10",
@@ -144,7 +143,7 @@ function Box3({
     dateHistory,
     componentVisibility,
     setComponentVisibility,
-}) {
+}: Box3Props) {
     return (
         <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-2 flex flex-col gap-4 shadow-lg shadow-cyan-500/10">
             <div className="flex flex-row">
@@ -223,7 +222,7 @@ function Box3({
 }
 
 /* Bottom full-width box */
-function Box4({ tabs, currentTab }) {
+function Box4({ tabs, currentTab }: Box4Props) {
     return (
         <div className=" from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-3 overflow-auto shadow-lg shadow-cyan-500/10">
             <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
@@ -231,7 +230,7 @@ function Box4({ tabs, currentTab }) {
             </h1>
 
             <div className="flex flex-wrap gap-3 content-start">
-                {tabs
+                {tabs!
                     .filter((e) => e.id !== currentTab)
                     .map((e, i) => {
                         const percentage = Math.min(
@@ -289,19 +288,20 @@ function MainSection() {
     const achievements = useStore((state) => state.achievements);
     const unlock = useStore((state) => state.unlock);
 
-    const { currentTab, setCurrentTab, tabs, setTabs } =
-        useContext(TabNumberContext);
+    const { currentTab, setCurrentTab, tabs, setTabs } = useContext(TabNumberContext)!;
 
     const hotKeys = tabs.map((e) => e.hotKey);
 
-    function incrementProgressBar(pressedKey) {
+    function incrementProgressBar(pressedKey: string) {
         const hotkey = pressedKey.toUpperCase().replace(/\s+/g, "");
         const foundTab = tabs.find(
-            (tab) =>
+            (tab: Tab) =>
                 tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey
         );
         const date = 1;
-
+if(!foundTab) {
+    return;
+}
         if (
             foundTab &&
             foundTab.current + 1 === foundTab.max &&
@@ -311,7 +311,7 @@ function MainSection() {
             unlock(2);
         }
 
-        setTabs((prevTabs) =>
+        setTabs((prevTabs: Tab[]) =>
             prevTabs.map((tab) =>
                 tab.id === foundTab.id
                     ? {
@@ -331,13 +331,8 @@ function MainSection() {
     }
 
     useHotkeys(hotKeys, (event, handler) => {
-        incrementProgressBar(handler.keys.join("+"));
+        incrementProgressBar(handler.keys?.join("+") || "");
     });
-
-    //testing
-    useEffect(() => {
-        console.log(achievements);
-    }, []);
 
     const [hasAnimated, setHasAnimated] = useState(() => {
         return localStorage.getItem("hasAnimated") === "true";
@@ -366,8 +361,6 @@ function MainSection() {
                     current={tabs[currentTab].current}
                     max={tabs[currentTab].max}
                     incrementProgressBar={incrementProgressBar}
-                    tabs={tabs}
-                    currentTab={currentTab}
                     hotKey={tabs[currentTab].hotKey}
                 />
             </motion.div>

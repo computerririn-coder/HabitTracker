@@ -1,28 +1,27 @@
-// @ts-nocheck
-import { Award, Target, Zap, TrendingUp, Star, Trophy, Crown, Flame } from 'lucide-react';
-import { useState, useReducer, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useStore } from './store'
-import { useComponentVisibility, } from './store';
+import { useComponentVisibility,type AchievementCardProps } from './store';
+
 
 // Reusable Achievement Card Component
-function AchievementCard({ achievement }) {
+function AchievementCard({ achievement }: AchievementCardProps) {
     const Icon = achievement.icon;
     const isUnlocked = achievement.unlocked;
 
     return (
         <div 
-            className={`relative bg-gradient-to-br ${isUnlocked ? achievement.bgGradient : 'from-slate-800/50 to-slate-900/50 border-slate-700/30'} border rounded-xl p-5 transition-all duration-300 ${isUnlocked ? 'hover:scale-[1.02] cursor-pointer' : 'opacity-60'}`}
+            className={`relative bg-linear-to-br ${isUnlocked ? achievement.bgGradient : 'from-slate-800/50 to-slate-900/50 border-slate-700/30'} border rounded-xl p-5 transition-all duration-300 ${isUnlocked ? 'hover:scale-105 cursor-pointer' : 'opacity-60'}`}
         >
             {/* Unlocked Badge */}
             {isUnlocked && (
-                <div className="absolute top-3 right-3 w-6 h-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                <div className="absolute top-3 right-3 w-6 h-6 bg-linear-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
                     <span className="text-white text-xs">✓</span>
                 </div>
             )}
 
             <div className="flex items-start gap-4">
                 {/* Icon */}
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${isUnlocked ? achievement.bgGradient : 'from-slate-700/50 to-slate-800/50'} border ${isUnlocked ? achievement.borderColor : 'border-slate-600/30'} flex items-center justify-center flex-shrink-0`}>
+                <div className={`w-14 h-14 rounded-xl bg-linear-to-br ${isUnlocked ? achievement.bgGradient : 'from-slate-700/50 to-slate-800/50'} border ${isUnlocked ? achievement.borderColor : 'border-slate-600/30'} flex items-center justify-center shrink-0`}>
                     <Icon className={`w-7 h-7 ${isUnlocked ? achievement.iconColor : 'text-slate-500'}`} />
                 </div>
 
@@ -56,12 +55,12 @@ const setComponentVisibility = useComponentVisibility((state) => state.setCompon
 
     return (
         <section className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="w-full max-w-4xl max-h-[90vh] bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20  flex flex-col">
+            <div className="w-full max-w-4xl max-h-[90vh] bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 flex flex-col">
                 {/* Header */}
                 <div className="relative p-6 border-b border-cyan-500/20">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-blue-400">
                                 Achievements
                             </h2>
                             <p className="text-cyan-500/70 text-sm mt-1">
@@ -73,7 +72,7 @@ const setComponentVisibility = useComponentVisibility((state) => state.setCompon
                         </button>
 
                         <div className="flex items-center gap-3">
-                            <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 rounded-lg px-4 py-2">
+                            <div className="bg-linear-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 rounded-lg px-4 py-2">
                                 <p className="text-cyan-300 font-semibold text-lg">
                                     {Math.round((unlockedCount / totalCount) * 100)}%
                                 </p>
@@ -81,9 +80,8 @@ const setComponentVisibility = useComponentVisibility((state) => state.setCompon
                         </div>
                     </div>
                     <button 
-                        className="absolute top-[-1rem] right-[-1rem] w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 hover:bg-red-500 text-red-400 
-                        hover:text-red-300 border border-red-500/30 transition-all duration-200 hover:scale-110 "
-                    onClick={() => setComponentVisibility( prev => ({...prev, achievementsVisibility: false}))}>
+                        className="absolute -top-4 -right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-red-300 border border-red-500/30 transition-all duration-200 hover:scale-110"
+                        onClick={() => setComponentVisibility(prev => ({...prev, achievementsVisibility: false}))}>
                         ×
                     </button>
                 </div>
@@ -92,7 +90,7 @@ const setComponentVisibility = useComponentVisibility((state) => state.setCompon
                 <div className="px-6 pt-4">
                     <div className="w-full bg-slate-700/50 rounded-full h-3">
                         <div 
-                            className="h-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500"
+                            className="h-3 rounded-full bg-linear-to-r from-cyan-500 to-blue-500 transition-all duration-500"
                             style={{ width: `${(unlockedCount / totalCount) * 100}%` }}
                         />
                     </div>

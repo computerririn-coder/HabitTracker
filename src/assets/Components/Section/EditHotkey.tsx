@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import { useState, useContext } from "react";
 import { set, useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";

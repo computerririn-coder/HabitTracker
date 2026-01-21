@@ -1,10 +1,10 @@
-//Note: i only know zustand at the higher level and basics only  and this is mostly ai generated
+//Note: i only know zustand at the higher level and basics only and this is mostly ai generated + i also putted typescripts here
 import { create } from 'zustand'
-import { Target } from 'lucide-react' // Changed from 'import type'
-import type { LucideIcon } from 'lucide-react' // Keep type-only import for LucideIcon
+import { Target } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
-
-interface Achievement {
+// Achievement types
+export type Achievement = {
   id: number
   name: string
   description: string
@@ -15,19 +15,114 @@ interface Achievement {
   iconColor: string
 }
 
-
-interface AchievementStore {
+export type AchievementStore = {
   achievements: Achievement[]
   unlock: (id: number) => void
 }
 
+export type AchievementCardProps = {
+    achievement: Achievement;
+}
+
+// Component Visibility types
+export type ComponentVisibilityState = {
+  addNewTab: boolean
+  editHotKey: boolean
+  achievementsVisibility: boolean
+}
+
+export type ComponentVisibilityStore = {
+  componentVisibility: ComponentVisibilityState
+  setComponentVisibility: (visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)) => void
+}
+
+// Total Tab Count types
+export type TotalTabCreatedCountStore = {
+  totalTabCreatedCount: number
+  incrementTabCount: () => void
+}
+
+// Completed Tasks Count types
+export type CompletedTasksCountStore = {
+  completedTasksCount: number
+  incrementCompletedTasksCount: () => void
+}
+
+//TaskBar
+export type Tab = {
+    id: number;
+    current: number;
+    max: number;
+    name: string;
+    hotKey: string;
+    dateHistory: string[];
+};
+
+//MainSection
+export type ProgressTrackerProps = {
+    name: string;
+    current: number;
+    max: number;
+    incrementProgressBar: (hotKey: string) => void;
+    hotKey: string;
+};
+
+export type Box1Props = {
+    currentSetting: string;
+};
+
+export type Box2Props = {
+    dateHistory: string[];
+};
+
+export type Box3Props = {
+    name: string;
+    current: number;
+    max: number;
+    currentSetting: string;
+    dateHistory: string[];
+    componentVisibility: ComponentVisibilityState;
+    setComponentVisibility: (
+        visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)
+    ) => void;
+};
+
+export type Box4Props = {
+    tabs: Tab[] | undefined;
+    currentTab: number;
+};
+
+export type TabNumberContextValue = {
+    currentTab: number;
+    setCurrentTab: (value: number | ((prev: number) => number)) => void;
+    tabs: Tab[];
+    setTabs: (value: Tab[] | ((prev: Tab[]) => Tab[])) => void;
+    tabCount: number;
+    setTabCount: (value: number | ((prev: number) => number)) => void;
+    setComponentVisibility: (visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)) => void;
+};
+
+export type TabBarProps = {
+    id: number;
+    name: string;
+    isActive: boolean;
+    tabs: Tab[];
+    setTabs: (value: Tab[] | ((prev: Tab[]) => Tab[])) => void;
+    tabCount: number;
+    currentTab: number;
+    setCurrentTab: (value: number | ((prev: number) => number)) => void;
+};
+
+
+
+// Achievement Store
 const useStore = create<AchievementStore>((set) => ({
   achievements: (() => {
-    const saved = localStorage.getItem('achievements');
+    const saved: string | null = localStorage.getItem('achievements');
     if (saved) {
-      const parsed = JSON.parse(saved);
+      const parsed: Omit<Achievement, 'icon'>[] = JSON.parse(saved);
 
-      return parsed.map((achievement: Achievement) => ({
+      return parsed.map((achievement: Omit<Achievement, 'icon'>): Achievement => ({
         ...achievement,
         icon: Target 
       }));
@@ -43,7 +138,7 @@ const useStore = create<AchievementStore>((set) => ({
         borderColor: "border-cyan-500/30",
         iconColor: "text-cyan-400",
       },
-            {
+      {
         id: 2,
         name: "Task Complete",
         description: "Finish A Task",
@@ -55,41 +150,52 @@ const useStore = create<AchievementStore>((set) => ({
       },
     ];
   })(),
+
+  //TaskBar
   
-  unlock: (id) => set((state) => {
-    const newAchievements = state.achievements.map(achievement => 
+  
+  unlock: (id: number) => set((state: AchievementStore) => {
+    const newAchievements: Achievement[] = state.achievements.map((achievement: Achievement): Achievement => 
       achievement.id === id 
         ? { ...achievement, unlocked: true }
         : achievement
     );
 
-    const toSave = newAchievements.map(({icon, ...rest}) => rest);
+    const toSave: Omit<Achievement, 'icon'>[] = newAchievements.map(({icon, ...rest}) => rest);
     localStorage.setItem('achievements', JSON.stringify(toSave));
     return { achievements: newAchievements };
   }),
 }))
+
 export { useStore }
 
-const useComponentVisibility = create((set) => ({
+// Component Visibility Store
+const useComponentVisibility = create<ComponentVisibilityStore>((set) => ({
   componentVisibility: {
     addNewTab: false,
     editHotKey: false,
     achievementsVisibility: false,
   },
   
-  setComponentVisibility: (visibility) => set({ componentVisibility: visibility }),
+  setComponentVisibility: (visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)) => 
+    set((state: ComponentVisibilityStore) => ({
+      componentVisibility: typeof visibility === 'function' 
+        ? visibility(state.componentVisibility) 
+        : visibility
+    })),
 }))
 
 export { useComponentVisibility }
 
-const useTotalTabCreatedCount = create((set) => ({
+// Total Tab Created Count Store
+const useTotalTabCreatedCount = create<TotalTabCreatedCountStore>((set) => ({
   totalTabCreatedCount: (() => {
-    const saved = localStorage.getItem('totalTabCreatedCount');
-    return saved ? JSON.parse(saved) : 0;
+    const saved: string | null = localStorage.getItem('totalTabCreatedCount');
+    return saved ? JSON.parse(saved) as number : 0;
   })(),
   
-  incrementTabCount: () => set((state) => {
-    const newCount = state.totalTabCreatedCount + 1;
+  incrementTabCount: () => set((state: TotalTabCreatedCountStore) => {
+    const newCount: number = state.totalTabCreatedCount + 1;
     localStorage.setItem('totalTabCreatedCount', JSON.stringify(newCount));
     return { totalTabCreatedCount: newCount };
   }),
@@ -97,9 +203,12 @@ const useTotalTabCreatedCount = create((set) => ({
 
 export { useTotalTabCreatedCount }
 
-const useCompletedTasksCount = create((set) => ({
+// Completed Tasks Count Store
+const useCompletedTasksCount = create<CompletedTasksCountStore>((set) => ({
   completedTasksCount: 0,
-  incrementCompletedTasksCount: () => set((state) => ({ variableName: state.variableName + 1 })),
+  incrementCompletedTasksCount: () => set((state: CompletedTasksCountStore) => ({ 
+    completedTasksCount: state.completedTasksCount + 1
+  })),
 }))
 
 export { useCompletedTasksCount }

@@ -1,12 +1,14 @@
-
-
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, type Dispatch, type SetStateAction } from "react";
 import MainSection from "./MainSection";
-import AddNewTab from "./addNewTab";
-import EditHotkey from "./editHotkey";
-import { useComponentVisibility } from "./store";
+import AddNewTab from "./AddNewTab";
+import EditHotkey from "./EditHotkey";
+import { useComponentVisibility, type ComponentVisibilityState, type Tab, type TabNumberContextValue, type TabBarProps  } from "./store";
 
-export const TabNumberContext = createContext(null);
+
+
+export const TabNumberContext = createContext<TabNumberContextValue | null>(null);
+
+
 
 function TabBar({
     id,
@@ -17,26 +19,32 @@ function TabBar({
     tabCount,
     currentTab,
     setCurrentTab,
-}) {
-    function deleteItem(id, tabs, setTabs, currentTab, setCurrentTab) {
-        console.log(id)
-        console.log(currentTab)
+}: TabBarProps) {
+    function deleteItem(
+        id: number,
+        tabs: Tab[],
+        setTabs: Dispatch<SetStateAction<Tab[]>>,
+        currentTab: number,
+        setCurrentTab: Dispatch<SetStateAction<number>>
+    ): void {
+        console.log(id);
+        console.log(currentTab);
         try {
-            const newTabs = tabs
-                .filter(tab => tab.id !== id)
-                .map((tab, index) => ({ ...tab, id: index }));
+            const newTabs: Tab[] = tabs
+                .filter((tab: Tab) => tab.id !== id)
+                .map((tab: Tab, index: number): Tab => ({ ...tab, id: index }));
 
             if (newTabs.length === 0) {
                 throw new Error("Cannot delete the last tab");
             }
 
-            if(currentTab === id && id >= 1){
-                setCurrentTab(e => e - 1)
+            if (currentTab === id && id >= 1) {
+                setCurrentTab((e: number) => e - 1);
             }
 
             if (id <= currentTab) {
-            setCurrentTab(prev => Math.max(0, prev - 1));
-            } 
+                setCurrentTab((prev: number) => Math.max(0, prev - 1));
+            }
 
             setTabs(newTabs);
         } catch (error) {
@@ -59,7 +67,7 @@ function TabBar({
 
                 <button
                     className="ml-2 w-5 h-5 rounded-full hover:bg-red-500/20 flex items-center justify-center flex-shrink-0 transition-all"
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.stopPropagation();
                         deleteItem(id, tabs, setTabs, currentTab, setCurrentTab);
                     }}
@@ -69,7 +77,7 @@ function TabBar({
             </div>
 
             <div
-                className={`w-[110%] h-2 rounded-t-md p-1 ml-[-5%] bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-300 ${
+                className={`w-[110%] h-2 rounded-t-md p-1 ml-[-5%] bg-linear-to-r from-cyan-600 to-blue-600 transition-all duration-300 ${
                     isActive ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
@@ -78,37 +86,44 @@ function TabBar({
 }
 
 function TasksBar() {
-//from store(zustand)
-const componentVisibility = useComponentVisibility((state) => state.componentVisibility)
-const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
+    // from store(zustand)
+    const componentVisibility: ComponentVisibilityState = useComponentVisibility(
+        (state) => state.componentVisibility
+    );
+    const setComponentVisibility: (
+        visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)
+    ) => void = useComponentVisibility((state) => state.setComponentVisibility);
 
-
-    const [currentTab, setCurrentTab] = useState(() => {
-        const saveCurrentTab = localStorage.getItem("saveCurrentTab");
-        return saveCurrentTab ? JSON.parse(saveCurrentTab) : 0
+    const [currentTab, setCurrentTab] = useState<number>(() => {
+        const saveCurrentTab: string | null = localStorage.getItem("saveCurrentTab");
+        return saveCurrentTab ? (JSON.parse(saveCurrentTab) as number) : 0;
     });
-    const [tabCount, setTabCount] = useState(0);
-const [tabs, setTabs] = useState(() => {
-    const saveTabs = localStorage.getItem("tabs");
-    return saveTabs ? JSON.parse(saveTabs) : [
-        {
-            id: 0,
-            current: 0,
-            max: 10,
-            name: "Water",
-            hotKey: "2+k",
-            dateHistory: ["Sample", "Sample2"],
-        },
-    ];
-});
 
-useEffect(() => {
-    localStorage.setItem("tabs", JSON.stringify(tabs));
-}, [tabs]);
+    const [tabCount, setTabCount] = useState<number>(0);
 
-useEffect(() => {
-    localStorage.setItem("saveCurrentTab", JSON.parse(currentTab));
-}, [currentTab])
+    const [tabs, setTabs] = useState<Tab[]>(() => {
+        const saveTabs: string | null = localStorage.getItem("tabs");
+        return saveTabs
+            ? (JSON.parse(saveTabs) as Tab[])
+            : [
+                  {
+                      id: 0,
+                      current: 0,
+                      max: 10,
+                      name: "Water",
+                      hotKey: "2+k",
+                      dateHistory: ["Sample", "Sample2"],
+                  },
+              ];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("tabs", JSON.stringify(tabs));
+    }, [tabs]);
+
+    useEffect(() => {
+        localStorage.setItem("saveCurrentTab", JSON.stringify(currentTab));
+    }, [currentTab]);
 
     return (
         <TabNumberContext.Provider
@@ -122,13 +137,9 @@ useEffect(() => {
                 setComponentVisibility,
             }}
         >
-            <section className="w-full h-[5vh] bg-gradient-to-r from-slate-900 to-slate-950 flex items-center justify-start pl-10 gap-10 border-b border-cyan-500/20">
-                {tabs.map(e => (
-                    <div
-                        key={e.id}
-                        onClick={() => setCurrentTab(e.id)}
-                        className="pt-2"
-                    >
+            <section className="w-full h-[5vh] bg-linear-to-r from-slate-900 to-slate-950 flex items-center justify-start pl-10 gap-10 border-b border-cyan-500/20">
+                {tabs.map((e: Tab) => (
+                    <div key={e.id} onClick={() => setCurrentTab(e.id)} className="pt-2">
                         <TabBar
                             id={e.id}
                             name={e.name}
@@ -142,23 +153,27 @@ useEffect(() => {
                     </div>
                 ))}
 
-                <button 
-                    className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110" 
-                    onClick={() => setComponentVisibility(({
-                        ...componentVisibility,
-                        addNewTab: true,
-                    }))}
+                <button
+                    className="bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110"
+                    onClick={() =>
+                        setComponentVisibility({
+                            ...componentVisibility,
+                            addNewTab: true,
+                        })
+                    }
                 >
                     +
                 </button>
                 <p className="text-cyan-300">{currentTab}</p>
             </section>
 
-            <div className="w-screen h-1 bg-gradient-to-r from-cyan-600 to-blue-600 absolute shadow-lg shadow-cyan-500/30"></div>
+            <div className="w-screen h-1 bg-linear-to-r from-cyan-600 to-blue-600 absolute shadow-lg shadow-cyan-500/30"></div>
 
             <MainSection />
-            {componentVisibility.addNewTab && (<AddNewTab setComponentVisibility={setComponentVisibility}/>)}
-            {componentVisibility.editHotKey && (<EditHotkey/>)}
+            {componentVisibility.addNewTab && (
+                <AddNewTab setComponentVisibility={setComponentVisibility} />
+            )}
+            {componentVisibility.editHotKey && <EditHotkey />}
         </TabNumberContext.Provider>
     );
 }
