@@ -113,7 +113,7 @@ export type TabBarProps = {
     setCurrentTab: (value: number | ((prev: number) => number)) => void;
 };
 
-//AddNewTab
+//AddNewTab Typescript
 export type FormData = {
     taskName: string;
     current: number;
@@ -122,6 +122,11 @@ export type FormData = {
     hotKey2: string;
 };
 
+//EditHotKey Typescript
+export type EditHotKeyFormData = {
+    hotKey0: string;
+    hotKey1: string;
+};
 
 // Achievement Store
 const useStore = create<AchievementStore>((set) => ({

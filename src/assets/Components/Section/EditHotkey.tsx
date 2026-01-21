@@ -1,7 +1,9 @@
 
-import { useState, useContext } from "react";
-import { set, useForm } from "react-hook-form";
+import { useContext } from "react";
+import { useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
+import { type EditHotKeyFormData } from "./store";
+
 
 
 function EditHotkey( ) {
@@ -14,7 +16,7 @@ function EditHotkey( ) {
         },
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: EditHotKeyFormData) => {
         const newHotKey = `${data.hotKey0}+${data.hotKey1}`
         console.log(newHotKey)
         setTabs((prev) =>
@@ -28,10 +30,10 @@ function EditHotkey( ) {
     
     return ( 
         <section className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="w-full max-w-md mx-4 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
+            <div className="w-full max-w-md mx-4 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
                 {/* Header */}
                 <div className="relative p-6 border-b border-cyan-500/20">
-                    <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                    <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-blue-400">
                         Edit Hotkey
                     </h2>
                     <button 
@@ -63,7 +65,7 @@ function EditHotkey( ) {
                         </div>
                     </div>
 
-                    <button type="submit" className="w-full mt-6 px-6 py-3.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]">
+                    <button type="submit" className="w-full mt-6 px-6 py-3.5 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]">
                         Save Changes
                     </button>
                 </form>

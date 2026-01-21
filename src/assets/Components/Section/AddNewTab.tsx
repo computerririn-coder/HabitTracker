@@ -2,15 +2,16 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
-import { useStore, useTotalTabCreatedCount,type ComponentVisibilityStore, type FormData } from './store'
+import { useComponentVisibility, useStore, useTotalTabCreatedCount, type FormData } from './store'
 
 
 
-function AddNewTab({ setComponentVisibility }: ComponentVisibilityStore) {
+function AddNewTab() {
     //From store(zustand)
    const unlock = useStore((state) => state.unlock);
    const totalTabCreatedCount = useTotalTabCreatedCount((state) => state.totalTabCreatedCount)
    const incrementTabCount = useTotalTabCreatedCount((state) => state.incrementTabCount)
+   const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
 
     const { tabs, setTabs, setTabCount } = useContext(TabNumberContext)!;
     const [existingKeyMsg, setExistingKeyMsg] = useState(false);

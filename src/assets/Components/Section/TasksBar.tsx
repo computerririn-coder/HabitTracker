@@ -170,7 +170,7 @@ function TasksBar() {
 
             <MainSection />
             {componentVisibility.addNewTab && (
-                <AddNewTab setComponentVisibility={setComponentVisibility} />
+                <AddNewTab/>
             )}
             {componentVisibility.editHotKey && <EditHotkey />}
         </TabNumberContext.Provider>
