@@ -1,9 +1,10 @@
-//Note: i only know zustand at the higher level and basics only and this is mostly ai generated + i also putted typescripts here
+//Note: i only know basics only and this is mostly ai generated + i also placed my  typescripts here
 import { create } from 'zustand'
-import { Target } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { Target, type LucideIcon } from 'lucide-react'
 
-// Achievement types
+
+
+
 export type Achievement = {
   id: number
   name: string
@@ -24,7 +25,7 @@ export type AchievementCardProps = {
     achievement: Achievement;
 }
 
-// Component Visibility types
+
 export type ComponentVisibilityState = {
   addNewTab: boolean
   editHotKey: boolean
@@ -36,19 +37,19 @@ export type ComponentVisibilityStore = {
   setComponentVisibility: (visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)) => void
 }
 
-// Total Tab Count types
+
 export type TotalTabCreatedCountStore = {
   totalTabCreatedCount: number
   incrementTabCount: () => void
 }
 
-// Completed Tasks Count types
+
 export type CompletedTasksCountStore = {
   completedTasksCount: number
   incrementCompletedTasksCount: () => void
 }
 
-//TaskBar
+//TaskBar Typescript
 export type Tab = {
     id: number;
     current: number;
@@ -58,7 +59,7 @@ export type Tab = {
     dateHistory: string[];
 };
 
-//MainSection
+//MainSection Typescript
 export type ProgressTrackerProps = {
     name: string;
     current: number;
@@ -128,7 +129,7 @@ export type EditHotKeyFormData = {
     hotKey1: string;
 };
 
-// Achievement Store
+
 const useStore = create<AchievementStore>((set) => ({
   achievements: (() => {
     const saved: string | null = localStorage.getItem('achievements');
@@ -164,8 +165,6 @@ const useStore = create<AchievementStore>((set) => ({
     ];
   })(),
 
-  //TaskBar
-  
   
   unlock: (id: number) => set((state: AchievementStore) => {
     const newAchievements: Achievement[] = state.achievements.map((achievement: Achievement): Achievement => 
@@ -182,7 +181,7 @@ const useStore = create<AchievementStore>((set) => ({
 
 export { useStore }
 
-// Component Visibility Store
+
 const useComponentVisibility = create<ComponentVisibilityStore>((set) => ({
   componentVisibility: {
     addNewTab: false,
@@ -200,7 +199,7 @@ const useComponentVisibility = create<ComponentVisibilityStore>((set) => ({
 
 export { useComponentVisibility }
 
-// Total Tab Created Count Store
+
 const useTotalTabCreatedCount = create<TotalTabCreatedCountStore>((set) => ({
   totalTabCreatedCount: (() => {
     const saved: string | null = localStorage.getItem('totalTabCreatedCount');
@@ -216,7 +215,7 @@ const useTotalTabCreatedCount = create<TotalTabCreatedCountStore>((set) => ({
 
 export { useTotalTabCreatedCount }
 
-// Completed Tasks Count Store
+
 const useCompletedTasksCount = create<CompletedTasksCountStore>((set) => ({
   completedTasksCount: 0,
   incrementCompletedTasksCount: () => set((state: CompletedTasksCountStore) => ({ 

@@ -56,27 +56,27 @@ function TabBar({
 
     return (
         <>
-            <div className="relative px-4 rounded-t-xl max-w-48 h-8 flex flex-row items-center bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 transition-colors cursor-pointer shadow-lg border border-cyan-500/30">
+            <div className="relative flex flex-row items-center max-w-48 h-8 px-4 rounded-t-xl bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 border border-cyan-500/30 shadow-lg transition-colors cursor-pointer">
                 <div className="flex items-center flex-1 min-w-0">
                     <div className="w-4 h-4 rounded-full bg-cyan-500 shrink-0"></div>
-                    <span className="text-sm font-medium text-cyan-50 truncate ml-2">
+                    <span className="ml-2 text-sm font-medium text-cyan-50 truncate">
                         {id + 1}: {name}
                     </span>
                 </div>
 
                 <button
-                    className="ml-2 w-5 h-5 rounded-full hover:bg-red-500/20 flex items-center justify-center shrink-0 transition-all"
+                    className="flex items-center justify-center ml-2 w-5 h-5 rounded-full hover:bg-red-500/20 shrink-0 transition-all"
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.stopPropagation();
                         deleteItem(id, tabs, setTabs, currentTab, setCurrentTab);
                     }}
                 >
-                    <span className="text-red-400 hover:text-red-300 text-lg leading-none">×</span>
+                    <span className="text-lg text-red-400 hover:text-red-300 leading-none">×</span>
                 </button>
             </div>
 
             <div
-                className={`w-[110%] h-2 rounded-t-md p-1 ml-[-5%] bg-linear-to-r from-cyan-600 to-blue-600 transition-all duration-300 ${
+                className={`w-[110%] h-2 p-1 ml-[-5%] rounded-t-md bg-linear-to-r from-cyan-600 to-blue-600 transition-all duration-300 ${
                     isActive ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
@@ -136,7 +136,7 @@ function TasksBar() {
                 setComponentVisibility,
             }}
         >
-            <section className="w-full h-[5vh] bg-linear-to-r from-slate-900 to-slate-950 flex items-center justify-start pl-10 gap-10 border-b border-cyan-500/20">
+            <section className="flex items-center justify-start w-full h-[5vh] pl-10 gap-10 bg-linear-to-r from-slate-900 to-slate-950 border-b border-cyan-500/20">
                 {tabs.map((e: Tab) => (
                     <div key={e.id} onClick={() => setCurrentTab(e.id)} className="pt-2">
                         <TabBar
@@ -153,7 +153,7 @@ function TasksBar() {
                 ))}
 
                 <button
-                    className="bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110"
+                    className="flex items-center justify-center w-8 h-8 rounded-full bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110"
                     onClick={() =>
                         setComponentVisibility({
                             ...componentVisibility,
@@ -166,7 +166,7 @@ function TasksBar() {
                 <p className="text-cyan-300">{currentTab}</p>
             </section>
 
-            <div className="w-screen h-1 bg-linear-to-r from-cyan-600 to-blue-600 absolute shadow-lg shadow-cyan-500/30"></div>
+            <div className="absolute w-screen h-1 bg-linear-to-r from-cyan-600 to-blue-600 shadow-lg shadow-cyan-500/30"></div>
 
             <MainSection />
             {componentVisibility.addNewTab && (

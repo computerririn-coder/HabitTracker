@@ -27,14 +27,13 @@ function ProgressTracker({ current, max, incrementProgressBar, hotKey }: Progres
 
     return (
         <div
-            className=" w-full md:h-full h-80 rounded-lg border-4 border-cyan-500/30 overflow-hidden relative bg-linear-to-br 
-        from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20 flex flex-col "
+            className="relative flex flex-col w-full md:h-full h-80 rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
         >
             {/* Progress pill at top */}
-            <div className="w-[40%] bg-slate-900/50 rounded-full px-8 py-6 border border-cyan-700/50 mx-auto flex flex-row justify-center items-center mt-5 relative z-10 ">
-                <div className="text-center ">
+            <div className="relative flex flex-row items-center justify-center w-[40%] px-8 py-6 mt-5 mx-auto rounded-full bg-slate-900/50 border border-cyan-700/50 z-10">
+                <div className="text-center">
                     <span className="font-bold text-cyan-50">{current}</span>
-                    <span className="text-cyan-400 mx-2">/</span>
+                    <span className="mx-2 text-cyan-400">/</span>
                     <span className="font-bold text-cyan-400">{max}</span>
                 </div>
             </div>
@@ -57,8 +56,7 @@ function ProgressTracker({ current, max, incrementProgressBar, hotKey }: Progres
             {/* Manual Increase button */}
             <div className="absolute bottom-16 left-0 right-0 flex justify-center z-10">
                 <button
-                    className="px-4 py-2 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
-                 text-cyan-50 font-semibold rounded-lg border border-cyan-400 shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
+                    className="px-4 py-2 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-cyan-50 font-semibold rounded-lg border border-cyan-400 shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
                     onClick={() => incrementProgressBar(hotKey)}
                 >
                     Manual Increase
@@ -66,9 +64,10 @@ function ProgressTracker({ current, max, incrementProgressBar, hotKey }: Progres
             </div>
 
             {/* Tracker title */}
+            
             <div className="absolute bottom-4 left-0 right-0">
                 <h2 className="text-2xl font-bold text-cyan-50 text-center">
-                    quotes
+                    {/*Temporarily removed */}
                 </h2>
             </div>
         </div>
@@ -78,12 +77,12 @@ function ProgressTracker({ current, max, incrementProgressBar, hotKey }: Progres
 /* Top-left small box */
 function Box1({ currentSetting }: Box1Props) {
     return (
-        <div className="bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-2 shadow-lg shadow-cyan-500/10">
+        <div className="flex flex-col gap-2 h-full p-4 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
             <h1 className="text-sm text-cyan-300 uppercase tracking-wide">
                 Current HotKey
             </h1>
 
-            <div className="flex-1 flex items-center justify-center rounded-xl bg-slate-900/50 border border-cyan-700/50">
+            <div className="flex flex-1 items-center justify-center rounded-xl bg-slate-900/50 border border-cyan-700/50">
                 <span className="text-4xl font-bold text-cyan-50">
                     {currentSetting}
                 </span>
@@ -100,8 +99,8 @@ function Box2({ dateHistory }: Box2Props) {
     ];
 
     return (
-        <div className="bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 shadow-lg shadow-cyan-500/10">
-            <h1 className="text-sm text-cyan-300 uppercase tracking-wide pb-4">
+        <div className="h-full p-4 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
+            <h1 className="pb-4 text-sm text-cyan-300 uppercase tracking-wide">
                 Most Recent Task Completion History
             </h1>
 
@@ -110,16 +109,15 @@ function Box2({ dateHistory }: Box2Props) {
                     <div
                         key={i}
                         className={`
-                            flex items-center gap-4 rounded-lg p-4 border-l-4 border-y border-r border-cyan-700/50
-                            bg-slate-900/40
+                            flex items-center gap-4 p-4 rounded-lg bg-slate-900/40 border-l-4 border-y border-r border-cyan-700/50
                             ${colors[i]}
                         `}
                     >
-                        <span className="text-cyan-400 text-sm font-semibold min-w-6">
+                        <span className="min-w-6 text-sm text-cyan-400 font-semibold">
                             #{i + 1}
                         </span>
 
-                        <p className="text-cyan-50 text-base font-medium flex-1">
+                        <p className="flex-1 text-base text-cyan-50 font-medium">
                             {e}
                         </p>
 
@@ -143,15 +141,14 @@ function Box3({
     setComponentVisibility,
 }: Box3Props) {
     return (
-        <div className="bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-2 flex flex-col gap-4 shadow-lg shadow-cyan-500/10">
+        <div className="flex flex-col gap-4 h-full p-2 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
             <div className="flex flex-row">
-                <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
+                <h1 className="pb-2 text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20">
                     Current Configuration
                 </h1>
 
                 <button
-                    className="ml-auto px-4 py-1.5 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
-             text-white text-sm font-medium rounded-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-200 transform hover:scale-105 active:scale-95"
+                    className="ml-auto px-4 py-1.5 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-medium rounded-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-200 transform  active:scale-95"
                     onClick={() =>
                         setComponentVisibility({
                             ...componentVisibility,
@@ -164,52 +161,52 @@ function Box3({
             </div>
 
             <div className="grid grid-rows-3 gap-4 flex-1">
-                <div className="row-span-1 bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex items-center justify-center">
+                <div className="flex items-center justify-center row-span-1 px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
                     <div className="flex flex-col items-center">
-                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
+                        <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
                             Task Name
                         </span>
-                        <span className="font-bold text-cyan-50 text-2xl">
+                        <span className="text-2xl text-cyan-50 font-bold">
                             {name}
                         </span>
                     </div>
                 </div>
 
-                <div className="row-span-1 grid grid-cols-2 gap-4">
-                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
-                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
+                <div className="grid grid-cols-2 gap-4 row-span-1">
+                    <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
+                        <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
                             Current Progress
                         </span>
-                        <span className="font-bold text-cyan-400 text-xl">
+                        <span className="text-xl text-cyan-400 font-bold">
                             {current}
                         </span>
                     </div>
 
-                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
-                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
+                    <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
+                        <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
                             Daily Goal
                         </span>
-                        <span className="font-bold text-blue-400 text-xl">
+                        <span className="text-xl text-blue-400 font-bold">
                             {max}
                         </span>
                     </div>
                 </div>
 
-                <div className="row-span-1 grid grid-cols-2 gap-4">
-                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
-                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
+                <div className="grid grid-cols-2 gap-4 row-span-1">
+                    <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
+                        <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
                             Hotkey
                         </span>
-                        <span className="font-mono font-bold text-cyan-50 text-lg bg-slate-900/70 px-3 py-1 rounded border border-cyan-700/50">
+                        <span className="px-3 py-1 text-lg text-cyan-50 font-mono font-bold rounded bg-slate-900/70 border border-cyan-700/50">
                             {currentSetting}
                         </span>
                     </div>
 
-                    <div className="bg-slate-900/50 rounded-lg px-4 py-3 border border-cyan-700/50 flex flex-col items-center justify-center">
-                        <span className="text-cyan-300 text-xs uppercase tracking-wide mb-1">
+                    <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
+                        <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
                             Total Completions
                         </span>
-                        <span className="font-bold text-purple-400 text-xl">
+                        <span className="text-xl text-purple-400 font-bold">
                             X
                         </span>
                     </div>
@@ -222,8 +219,8 @@ function Box3({
 /* Bottom full-width box */
 function Box4({ tabs, currentTab }: Box4Props) {
     return (
-        <div className=" from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-3 overflow-auto shadow-lg shadow-cyan-500/10">
-            <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
+        <div className="flex flex-col gap-3 h-full p-4 rounded-lg from-slate-800 via-slate-900 to-slate-950 overflow-auto border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
+            <h1 className="pb-2 text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20">
                 All Tasks List
             </h1>
 
@@ -239,31 +236,31 @@ function Box4({ tabs, currentTab }: Box4Props) {
                         return (
                             <div
                                 key={i}
-                                className="w-[32.3%] bg-slate-900/50 rounded-lg border border-cyan-700/50 flex flex-col gap-1"
+                                className="flex flex-col gap-1 w-[32.3%] rounded-lg bg-slate-900/50 border border-cyan-700/50"
                             >
                                 <div className="flex items-center gap-2 px-3 pt-1">
-                                    <span className="text-cyan-300 text-xs">
+                                    <span className="text-xs text-cyan-300">
                                         Name:
                                     </span>
-                                    <span className="font-semibold text-cyan-50 text-sm">
+                                    <span className="text-sm text-cyan-50 font-semibold">
                                         {e.name}
                                     </span>
                                 </div>
 
                                 <div className="flex items-center gap-2 px-3">
-                                    <span className="text-cyan-300 text-xs">
+                                    <span className="text-xs text-cyan-300">
                                         Hotkey:
                                     </span>
-                                    <span className="font-mono font-semibold text-cyan-50 text-xs bg-slate-900/70 px-2 py-0.5 rounded border border-cyan-700/50">
+                                    <span className="px-2 py-0.5 text-xs text-cyan-50 font-mono font-semibold rounded bg-slate-900/70 border border-cyan-700/50">
                                         {e.hotKey}
                                     </span>
                                 </div>
 
                                 <div className="flex items-center gap-2 px-3 pb-1">
-                                    <span className="text-cyan-300 text-xs">
+                                    <span className="text-xs text-cyan-300">
                                         Progress:
                                     </span>
-                                    <span className="font-semibold text-cyan-400 text-sm">
+                                    <span className="text-sm text-cyan-400 font-semibold">
                                         {percentage}%
                                     </span>
                                 </div>
@@ -296,9 +293,9 @@ function MainSection() {
             (tab: Tab) =>
                 tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey
         );
-if(!foundTab) {
-    return;
-}
+        if(!foundTab) {
+            return;
+        }
         if (
             foundTab &&
             foundTab.current + 1 === foundTab.max &&
@@ -343,92 +340,90 @@ if(!foundTab) {
     }, []);
 
     return (
-       <section className="w-full min-h-[85vh] pb-6 md:pb-4 bg-slate-950 px-8 ">
-    <div className="  flex flex-col gap-6 ">
-        <div className="grid grid-cols-1 xl:grid-cols-3  flex-1 pt-10 gap-10">
-            
-            <motion.div 
-                className="col-span-1 h-60   xl:h-full w-full md:w-[104%] xl:w-full mx-auto "
-                initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-            >
-                <ProgressTracker
-                    name={tabs[currentTab].name}
-                    current={tabs[currentTab].current}
-                    max={tabs[currentTab].max}
-                    incrementProgressBar={incrementProgressBar}
-                    hotKey={tabs[currentTab].hotKey}
-                />
-            </motion.div>
-
-            <div className="col-span-1 md:col-span-2 grid grid-rows-2 gap-6 h-full w-full ">
-                <div className="row-span-1 grid grid-cols-1 md:grid-cols-2 gap-6  ">
-                    <div className="grid grid-rows-3 gap-6">
-                        <motion.div 
-                            className="row-span-2 pt-15 md:pt-0"
-                            initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                        >
-                            <Box1
-                                currentSetting={
-                                    tabs[currentTab].hotKey
-                                }
-                            />
-                        </motion.div>
-
-                        <motion.div 
-                            className="row-span-7"
-                            initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
-                            <Box2
-                                dateHistory={
-                                    tabs[currentTab].dateHistory
-                                }
-                            />
-                        </motion.div>
-                    </div>
-
-                    <motion.div
+        <section className="w-full min-h-[85vh] px-8 pb-6 md:pb-4 bg-slate-950">
+            <div className="flex flex-col gap-6">
+                <div className="grid grid-cols-1 xl:grid-cols-3 flex-1 gap-10 pt-10">
+                    
+                    <motion.div 
+                        className="col-span-1 w-full md:w-[104%] xl:w-full h-60 xl:h-full mx-auto"
                         initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.3 }}
+                        transition={{ duration: 0.6 }}
                     >
-                        <Box3
-                            dateHistory={tabs[currentTab].dateHistory}
+                        <ProgressTracker
                             name={tabs[currentTab].name}
                             current={tabs[currentTab].current}
                             max={tabs[currentTab].max}
-                            currentSetting={tabs[currentTab].hotKey}
-                            componentVisibility={componentVisibility}
-                            setComponentVisibility={
-                                setComponentVisibility
-                            }
+                            incrementProgressBar={incrementProgressBar}
+                            hotKey={tabs[currentTab].hotKey}
                         />
                     </motion.div>
-                </div>
 
-                <motion.div 
-                    className="row-span-1 "
-                    initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                    <Box4
-                        tabs={tabs}
-                        currentTab={currentTab}
-                    />
-                </motion.div>
+                    <div className="grid grid-rows-2 gap-6 col-span-1 md:col-span-2 w-full h-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 row-span-1">
+                            <div className="grid grid-rows-3 gap-6">
+                                <motion.div 
+                                    className="row-span-2 pt-15 md:pt-0"
+                                    initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.1 }}
+                                >
+                                    <Box1
+                                        currentSetting={
+                                            tabs[currentTab].hotKey
+                                        }
+                                    />
+                                </motion.div>
+
+                                <motion.div 
+                                    className="row-span-7"
+                                    initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.2 }}
+                                >
+                                    <Box2
+                                        dateHistory={
+                                            tabs[currentTab].dateHistory
+                                        }
+                                    />
+                                </motion.div>
+                            </div>
+
+                            <motion.div
+                                initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.3 }}
+                            >
+                                <Box3
+                                    dateHistory={tabs[currentTab].dateHistory}
+                                    name={tabs[currentTab].name}
+                                    current={tabs[currentTab].current}
+                                    max={tabs[currentTab].max}
+                                    currentSetting={tabs[currentTab].hotKey}
+                                    componentVisibility={componentVisibility}
+                                    setComponentVisibility={
+                                        setComponentVisibility
+                                    }
+                                />
+                            </motion.div>
+                        </div>
+
+                        <motion.div 
+                            className="row-span-1"
+                            initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                        >
+                            <Box4
+                                tabs={tabs}
+                                currentTab={currentTab}
+                            />
+                        </motion.div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
     );
 }
 
 export default MainSection;
-
-// Do not change anything else including my texts,paddings,etc
