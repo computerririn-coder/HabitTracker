@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { TabNumberContext } from "./TasksBar.tsx";
 import { useHotkeys } from "react-hotkeys-hook";
-import axios from "axios";
 import { useStore, useComponentVisibility } from "./store.ts";
 import { motion } from "framer-motion";
-import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab, TabNumberContextValue  } from './store';
+import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab  } from './store';
 
-function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }: ProgressTrackerProps) {
+function ProgressTracker({ current, max, incrementProgressBar, hotKey }: ProgressTrackerProps) {
     const percentage = Math.min(Math.round((current / max) * 100), 100);
 
     // needs fixing if api returns error use my local quotes instead
@@ -28,7 +27,7 @@ function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }: P
 
     return (
         <div
-            className=" w-full md:h-full h-[20rem] rounded-lg border-4 border-cyan-500/30 overflow-hidden relative bg-gradient-to-br 
+            className=" w-full md:h-full h-80 rounded-lg border-4 border-cyan-500/30 overflow-hidden relative bg-linear-to-br 
         from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20 flex flex-col "
         >
             {/* Progress pill at top */}
@@ -42,10 +41,10 @@ function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }: P
 
             {/* Water fill */}
             <div
-                className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-500 ease-out"
+                className="absolute bottom-0 left-0 right-0 bg-linear-to-r from-cyan-600 to-blue-600 transition-all duration-500 ease-out"
                 style={{ height: `${percentage}%` }}
             >
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-600/30 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-blue-600/30 to-transparent" />
             </div>
 
             {/* Percentage text */}
@@ -58,7 +57,7 @@ function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }: P
             {/* Manual Increase button */}
             <div className="absolute bottom-16 left-0 right-0 flex justify-center z-10">
                 <button
-                    className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
+                    className="px-4 py-2 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
                  text-cyan-50 font-semibold rounded-lg border border-cyan-400 shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
                     onClick={() => incrementProgressBar(hotKey)}
                 >
@@ -79,7 +78,7 @@ function ProgressTracker({ name, current, max, incrementProgressBar, hotKey }: P
 /* Top-left small box */
 function Box1({ currentSetting }: Box1Props) {
     return (
-        <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-2 shadow-lg shadow-cyan-500/10">
+        <div className="bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 flex flex-col gap-2 shadow-lg shadow-cyan-500/10">
             <h1 className="text-sm text-cyan-300 uppercase tracking-wide">
                 Current HotKey
             </h1>
@@ -101,7 +100,7 @@ function Box2({ dateHistory }: Box2Props) {
     ];
 
     return (
-        <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 shadow-lg shadow-cyan-500/10">
+        <div className="bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-4 shadow-lg shadow-cyan-500/10">
             <h1 className="text-sm text-cyan-300 uppercase tracking-wide pb-4">
                 Most Recent Task Completion History
             </h1>
@@ -116,7 +115,7 @@ function Box2({ dateHistory }: Box2Props) {
                             ${colors[i]}
                         `}
                     >
-                        <span className="text-cyan-400 text-sm font-semibold min-w-[24px]">
+                        <span className="text-cyan-400 text-sm font-semibold min-w-6">
                             #{i + 1}
                         </span>
 
@@ -140,19 +139,18 @@ function Box3({
     current,
     max,
     currentSetting,
-    dateHistory,
     componentVisibility,
     setComponentVisibility,
 }: Box3Props) {
     return (
-        <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-2 flex flex-col gap-4 shadow-lg shadow-cyan-500/10">
+        <div className="bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-lg border border-cyan-500/30 h-full p-2 flex flex-col gap-4 shadow-lg shadow-cyan-500/10">
             <div className="flex flex-row">
                 <h1 className="text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 pb-2">
                     Current Configuration
                 </h1>
 
                 <button
-                    className="ml-auto px-4 py-1.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
+                    className="ml-auto px-4 py-1.5 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500
              text-white text-sm font-medium rounded-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-200 transform hover:scale-105 active:scale-95"
                     onClick={() =>
                         setComponentVisibility({
@@ -288,7 +286,7 @@ function MainSection() {
     const achievements = useStore((state) => state.achievements);
     const unlock = useStore((state) => state.unlock);
 
-    const { currentTab, setCurrentTab, tabs, setTabs } = useContext(TabNumberContext)!;
+    const { currentTab, tabs, setTabs } = useContext(TabNumberContext)!;
 
     const hotKeys = tabs.map((e) => e.hotKey);
 
@@ -298,7 +296,6 @@ function MainSection() {
             (tab: Tab) =>
                 tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey
         );
-        const date = 1;
 if(!foundTab) {
     return;
 }
@@ -330,7 +327,7 @@ if(!foundTab) {
         );
     }
 
-    useHotkeys(hotKeys, (event, handler) => {
+    useHotkeys(hotKeys, (_, handler) => {
         incrementProgressBar(handler.keys?.join("+") || "");
     });
 

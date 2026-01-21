@@ -5,7 +5,7 @@ import { TabNumberContext } from "./TasksBar";
 
 
 function EditHotkey( ) {
-    const { currentTab, setTabs, setComponentVisibility } = useContext(TabNumberContext);
+    const { currentTab, setTabs, setComponentVisibility } = useContext(TabNumberContext)!;
 
     const { register, handleSubmit } = useForm({
         defaultValues: {

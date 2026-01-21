@@ -113,6 +113,14 @@ export type TabBarProps = {
     setCurrentTab: (value: number | ((prev: number) => number)) => void;
 };
 
+//AddNewTab
+export type FormData = {
+    taskName: string;
+    current: number;
+    max: number;
+    hotKey: string;
+    hotKey2: string;
+};
 
 
 // Achievement Store

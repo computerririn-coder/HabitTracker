@@ -2,17 +2,18 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
-import { useStore, useTotalTabCreatedCount } from './store'
+import { useStore, useTotalTabCreatedCount,type ComponentVisibilityStore, type FormData } from './store'
 
-function AddNewTab({ setComponentVisibility }) {
+
+
+function AddNewTab({ setComponentVisibility }: ComponentVisibilityStore) {
     //From store(zustand)
    const unlock = useStore((state) => state.unlock);
    const totalTabCreatedCount = useTotalTabCreatedCount((state) => state.totalTabCreatedCount)
    const incrementTabCount = useTotalTabCreatedCount((state) => state.incrementTabCount)
 
-    const { currentTab, tabs, setTabs, tabCount, setTabCount } = useContext(TabNumberContext);
+    const { tabs, setTabs, setTabCount } = useContext(TabNumberContext)!;
     const [existingKeyMsg, setExistingKeyMsg] = useState(false);
-    const [userInput, setUserInput] = useState({});
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             taskName: "Default",
@@ -23,7 +24,7 @@ function AddNewTab({ setComponentVisibility }) {
         },
     });
      
-    const onSubmit = (data) => {
+    const onSubmit = (data: FormData) => {
         const newHotKey = `${data.hotKey}+${data.hotKey2}`;
         const existingHotKeys = tabs.map(e => e.hotKey);
         
@@ -65,10 +66,10 @@ console.log(totalTabCreatedCount)
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 ">
-            <div className="w-full max-w-md mx-4 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
+            <div className="w-full max-w-md mx-4 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
                 {/* Header */}
                 <div className="relative p-6 border-b border-cyan-500/20">
-                    <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                    <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-blue-400">
                         Create New Task
                     </h2>
                     
@@ -231,7 +232,7 @@ console.log(totalTabCreatedCount)
     {/* Submit Button */}
     <button
         type="submit"
-        className="w-full mt-6 px-6 py-3.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
+        className="w-full mt-6 px-6 py-3.5 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
     >
         Create Tracker
     </button>

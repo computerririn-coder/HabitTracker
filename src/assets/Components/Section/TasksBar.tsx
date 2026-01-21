@@ -16,7 +16,6 @@ function TabBar({
     isActive,
     tabs,
     setTabs,
-    tabCount,
     currentTab,
     setCurrentTab,
 }: TabBarProps) {
@@ -57,16 +56,16 @@ function TabBar({
 
     return (
         <>
-            <div className="relative px-4 rounded-t-xl max-w-48 h-8 flex flex-row items-center bg-gradient-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 transition-colors cursor-pointer shadow-lg border border-cyan-500/30">
+            <div className="relative px-4 rounded-t-xl max-w-48 h-8 flex flex-row items-center bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 transition-colors cursor-pointer shadow-lg border border-cyan-500/30">
                 <div className="flex items-center flex-1 min-w-0">
-                    <div className="w-4 h-4 rounded-full bg-cyan-500 flex-shrink-0"></div>
+                    <div className="w-4 h-4 rounded-full bg-cyan-500 shrink-0"></div>
                     <span className="text-sm font-medium text-cyan-50 truncate ml-2">
                         {id + 1}: {name}
                     </span>
                 </div>
 
                 <button
-                    className="ml-2 w-5 h-5 rounded-full hover:bg-red-500/20 flex items-center justify-center flex-shrink-0 transition-all"
+                    className="ml-2 w-5 h-5 rounded-full hover:bg-red-500/20 flex items-center justify-center shrink-0 transition-all"
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.stopPropagation();
                         deleteItem(id, tabs, setTabs, currentTab, setCurrentTab);
