@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useStore } from './store'
-import { useComponentVisibility,type AchievementCardProps, type TabNumberContextValue } from './store';
+import { useComponentVisibility,type AchievementCardProps, } from './store';
 
 
 // Reusable Achievement Card Component
