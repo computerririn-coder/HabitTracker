@@ -186,7 +186,7 @@ function Box3({
 
                     <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
                         <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
-                            Daily Goalfpp
+                            Daily Goal
                         </span>
                         <span className="text-xl text-blue-400 font-bold">
                             {max}
@@ -307,7 +307,13 @@ function MainSection() {
 if (foundTab.current + 1 === foundTab.max) {
     setTotalTaskCompletion(totalTaskCompletion + 1);
     foundTab.completionCount++;
+setTabs((prev) => 
+  prev.map((e) =>  
+    e.id === foundTab.id ? {...e, current: -1} : e  //if i use "0" im not getting zero in the progress bar im getting "1" and this is the quickest sol
+  )
+)
 }
+
 
         setTabs((prevTabs: Tab[]) =>
             prevTabs.map((tab) =>
