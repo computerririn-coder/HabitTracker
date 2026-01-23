@@ -3,7 +3,7 @@
 
 import './App.css'
 import NavigationBar from './assets/Components/NavigationBar'
-import Footer from './assets/Components/Footer'
+import Footer from './assets/Components/Footer.tsx'
 import TasksBar from './assets/Components/Section/TasksBar.tsx'
 import Achievements from './assets/Components/Section/Achievements.tsx'
 import { useComponentVisibility } from './assets/Components/Section/store.ts'

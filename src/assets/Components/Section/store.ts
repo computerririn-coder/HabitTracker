@@ -86,6 +86,7 @@ export type Box3Props = {
     setComponentVisibility: (
         visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)
     ) => void;
+    totalTaskCompletion: number;
 };
 
 export type Box4Props = {
@@ -227,9 +228,14 @@ export { useCompletedTasksCount }
 
 //Total task Completion number
 
-const useTotalTaskCompletion = create((set) => ({
+type TotalTaskCompletionStore = {
+  totalTaskCompletion: number;
+  setTotalTaskCompletion: (value: number) => void;
+}
+
+const useTotalTaskCompletion = create<TotalTaskCompletionStore>((set) => ({
   totalTaskCompletion: parseInt(localStorage.getItem('totalTaskCompletion') || '0'),
-  setTotalTaskCompletion: (value) => {
+  setTotalTaskCompletion: (value: number) => {
     localStorage.setItem('totalTaskCompletion', value.toString());
     set({ totalTaskCompletion: value });
   }

@@ -41,10 +41,7 @@ function AchievementCard({ achievement }: AchievementCardProps) {
 function Achievements() {
     //from store(zustand)
     const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
-
     const achievements = useStore((state) => state.achievements);
-    const unlock = useStore((state) => state.unlock);
-
     const unlockedCount = achievements.filter(a => a.unlocked).length;
     const totalCount = achievements.length;
 

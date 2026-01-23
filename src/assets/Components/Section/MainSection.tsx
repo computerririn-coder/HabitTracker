@@ -3,8 +3,8 @@ import { TabNumberContext } from "./TasksBar.tsx";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useStore, useComponentVisibility } from "./store.ts";
 import { motion } from "framer-motion";
-import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab  } from './store';
-import { useTotalTaskCompletion } from "./store";
+import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab  } from './store.ts';
+import { useTotalTaskCompletion } from "./store.ts";
 
 function ProgressTracker({ current, max, incrementProgressBar, hotKey }: ProgressTrackerProps) {
     const percentage = Math.min(Math.round((current / max) * 100), 100);
