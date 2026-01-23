@@ -224,3 +224,15 @@ const useCompletedTasksCount = create<CompletedTasksCountStore>((set) => ({
 }))
 
 export { useCompletedTasksCount }
+
+//Total task Completion number
+
+const useTotalTaskCompletion = create((set) => ({
+  totalTaskCompletion: parseInt(localStorage.getItem('totalTaskCompletion') || '0'),
+  setTotalTaskCompletion: (value) => {
+    localStorage.setItem('totalTaskCompletion', value.toString());
+    set({ totalTaskCompletion: value });
+  }
+}));
+
+export { useTotalTaskCompletion }

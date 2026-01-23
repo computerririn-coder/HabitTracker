@@ -4,6 +4,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useStore, useComponentVisibility } from "./store.ts";
 import { motion } from "framer-motion";
 import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab  } from './store';
+import { useTotalTaskCompletion } from "./store";
 
 function ProgressTracker({ current, max, incrementProgressBar, hotKey }: ProgressTrackerProps) {
     const percentage = Math.min(Math.round((current / max) * 100), 100);
@@ -139,6 +140,7 @@ function Box3({
     currentSetting,
     componentVisibility,
     setComponentVisibility,
+    totalTaskCompletion,
 }: Box3Props) {
     return (
         <div className="flex flex-col gap-4 h-full p-2 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
@@ -207,7 +209,7 @@ function Box3({
                             Total Completions
                         </span>
                         <span className="text-xl text-purple-400 font-bold">
-                            X
+                            {totalTaskCompletion}
                         </span>
                     </div>
                 </div>
@@ -274,14 +276,11 @@ function Box4({ tabs, currentTab }: Box4Props) {
 
 function MainSection() {
     //from store(zustand)
-    const componentVisibility = useComponentVisibility(
-        (state) => state.componentVisibility
-    );
-    const setComponentVisibility = useComponentVisibility(
-        (state) => state.setComponentVisibility
-    );
+    const componentVisibility = useComponentVisibility((state) => state.componentVisibility);
+    const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility);
     const achievements = useStore((state) => state.achievements);
     const unlock = useStore((state) => state.unlock);
+    const { totalTaskCompletion, setTotalTaskCompletion } = useTotalTaskCompletion();
 
     const { currentTab, tabs, setTabs } = useContext(TabNumberContext)!;
 
@@ -305,6 +304,10 @@ function MainSection() {
             unlock(2);
         }
 
+if (foundTab.current + 1 === foundTab.max) {
+    setTotalTaskCompletion(totalTaskCompletion + 1);
+}
+console.log(foundTab)
         setTabs((prevTabs: Tab[]) =>
             prevTabs.map((tab) =>
                 tab.id === foundTab.id
@@ -401,9 +404,8 @@ function MainSection() {
                                     max={tabs[currentTab].max}
                                     currentSetting={tabs[currentTab].hotKey}
                                     componentVisibility={componentVisibility}
-                                    setComponentVisibility={
-                                        setComponentVisibility
-                                    }
+                                    setComponentVisibility={setComponentVisibility}
+                                    totalTaskCompletion={totalTaskCompletion}
                                 />
                             </motion.div>
                         </div>

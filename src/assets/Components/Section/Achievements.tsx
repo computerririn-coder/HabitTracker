@@ -66,10 +66,6 @@ function Achievements() {
                                 {unlockedCount} of {totalCount}
                             </p>
                         </div>
-                        <button onClick={() => unlock(1)}>
-                            Unlock
-                        </button>
-
                         <div className="flex items-center gap-3">
                             <div className="rounded-lg border border-cyan-500/30 bg-linear-to-r from-cyan-500/20 to-blue-500/20 px-4 py-2">
                                 <p className="text-lg font-semibold text-cyan-300">

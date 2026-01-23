@@ -163,7 +163,6 @@ function TasksBar() {
                 >
                     +
                 </button>
-                <p className="text-cyan-300">{currentTab}</p>
             </section>
 
             <div className="absolute w-screen h-1 bg-linear-to-r from-cyan-600 to-blue-600 shadow-lg shadow-cyan-500/30"></div>
