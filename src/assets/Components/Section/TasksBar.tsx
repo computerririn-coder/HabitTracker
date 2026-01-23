@@ -112,6 +112,7 @@ function TasksBar() {
                       name: "Water",
                       hotKey: "2+k",
                       dateHistory: ["Sample", "Sample2"],
+                      completionCount: 0,
                   },
               ];
     });

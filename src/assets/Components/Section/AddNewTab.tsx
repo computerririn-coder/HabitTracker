@@ -45,6 +45,7 @@ function AddNewTab() {
             name: data.taskName,
             hotKey: newHotKey,
             dateHistory: [],
+            completionCount: 0,
         };
 
         setTabs((prev) =>

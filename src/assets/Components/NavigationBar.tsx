@@ -1,14 +1,13 @@
 
 
 import { Zap, Award } from 'lucide-react';
-import { useComponentVisibility, useCompletedTasksCount } from './Section/store';
-
+import { useComponentVisibility, useTotalTaskCompletion } from './Section/store';
 
 function NavigationBar() {
   //from store
 const componentVisibility = useComponentVisibility((state) => state.componentVisibility)
 const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
-const completedTasksCount = useCompletedTasksCount((state) => state.completedTasksCount)
+const { totalTaskCompletion } = useTotalTaskCompletion();
 
 
   return (
@@ -43,7 +42,7 @@ const completedTasksCount = useCompletedTasksCount((state) => state.completedTas
       
         <div className="hidden sm:flex items-center gap-2 bg-linear-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg px-3 py-1.5 hover:from-purple-500/30 hover:to-pink-500/30 transition-all">
           <Award className="w-4 h-4 text-purple-400" />
-          <span className="text-sm font-semibold text-purple-300">{completedTasksCount} completions</span>
+          <span className="text-sm font-semibold text-purple-300">{totalTaskCompletion} completions</span>
         </div>
       </div>
     </nav>

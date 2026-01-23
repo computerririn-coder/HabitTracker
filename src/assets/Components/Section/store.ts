@@ -57,6 +57,7 @@ export type Tab = {
     name: string;
     hotKey: string;
     dateHistory: string[];
+    completionCount: number;
 };
 
 //MainSection Typescript
@@ -86,7 +87,7 @@ export type Box3Props = {
     setComponentVisibility: (
         visibility: ComponentVisibilityState | ((prev: ComponentVisibilityState) => ComponentVisibilityState)
     ) => void;
-    totalTaskCompletion: number;
+    completionCount: number;
 };
 
 export type Box4Props = {

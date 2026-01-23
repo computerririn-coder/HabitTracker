@@ -140,7 +140,7 @@ function Box3({
     currentSetting,
     componentVisibility,
     setComponentVisibility,
-    totalTaskCompletion,
+    completionCount,
 }: Box3Props) {
     return (
         <div className="flex flex-col gap-4 h-full p-2 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
@@ -186,7 +186,7 @@ function Box3({
 
                     <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
                         <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
-                            Daily Goal
+                            Daily Goalfpp
                         </span>
                         <span className="text-xl text-blue-400 font-bold">
                             {max}
@@ -206,10 +206,10 @@ function Box3({
 
                     <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
                         <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
-                            Total Completions
+                         Total Completions
                         </span>
                         <span className="text-xl text-purple-400 font-bold">
-                            {totalTaskCompletion}
+                            {completionCount}
                         </span>
                     </div>
                 </div>
@@ -306,8 +306,9 @@ function MainSection() {
 
 if (foundTab.current + 1 === foundTab.max) {
     setTotalTaskCompletion(totalTaskCompletion + 1);
+    foundTab.completionCount++;
 }
-console.log(foundTab)
+
         setTabs((prevTabs: Tab[]) =>
             prevTabs.map((tab) =>
                 tab.id === foundTab.id
@@ -405,7 +406,7 @@ console.log(foundTab)
                                     currentSetting={tabs[currentTab].hotKey}
                                     componentVisibility={componentVisibility}
                                     setComponentVisibility={setComponentVisibility}
-                                    totalTaskCompletion={totalTaskCompletion}
+                                    completionCount={tabs[currentTab].completionCount}
                                 />
                             </motion.div>
                         </div>
