@@ -5,27 +5,39 @@ import { useStore, useComponentVisibility } from "./store.ts";
 import { motion } from "framer-motion";
 import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab  } from './store.ts';
 import { useTotalTaskCompletion } from "./store.ts";
+import axios from 'axios';
 
 function ProgressTracker({ current, max, incrementProgressBar, hotKey }: ProgressTrackerProps) {
     const percentage = Math.min(Math.round((current / max) * 100), 100);
+    const [quotes, setQuotes] = useState("");
+    const randomNum = Math.floor(Math.random() * 3);
+const fallbackQuotes = [
+    "The secret of getting ahead is getting started.",
+    "Small progress is still progress. Keep going!",
+    "Don't watch the clock; do what it does. Keep going."
+];
 
-    // needs fixing if api returns error use my local quotes instead
-    /*
     useEffect(() => {
         async function getMotivationalQuotes() {
             try {
                 const response = await axios.get(
                     "https://quoteslate.vercel.app/api/quotes/random"
                 );
-                console.log(response.data);
+                setQuotes(response.data.quote);
             } catch (error) {
                 console.error("API fetch error:", error);
+                setQuotes(fallbackQuotes[randomNum]);
             }
         }
         getMotivationalQuotes();
-    }, []);
-    */
 
+        const interval = setInterval(() => {
+        getMotivationalQuotes(); 
+    }, 60000); 
+    
+    return () => clearInterval(interval); 
+    }, []);
+    
     return (
         <div
             className="relative flex flex-col w-full md:h-full h-80 rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
@@ -54,22 +66,21 @@ function ProgressTracker({ current, max, incrementProgressBar, hotKey }: Progres
                 </span>
             </div>
 
-            {/* Manual Increase button */}
-            <div className="absolute bottom-16 left-0 right-0 flex justify-center z-10">
+            {/* Motivational Quote - now at bottom-16 */}
+            <div className="absolute bottom-16 left-0 right-0 px-6 z-10">
+                <p className="text-sm md:text-base font-medium text-cyan-50 text-center italic leading-relaxed drop-shadow-lg">
+                    "{quotes}"
+                </p>
+            </div>
+
+            {/* Manual Increase button - now at bottom-4 */}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center z-10">
                 <button
                     className="px-4 py-2 bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-cyan-50 font-semibold rounded-lg border border-cyan-400 shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
                     onClick={() => incrementProgressBar(hotKey)}
                 >
                     Manual Increase
                 </button>
-            </div>
-
-            {/* Tracker title */}
-            
-            <div className="absolute bottom-4 left-0 right-0">
-                <h2 className="text-2xl font-bold text-cyan-50 text-center">
-                    {/*Temporarily removed */}
-                </h2>
             </div>
         </div>
     );
@@ -286,34 +297,33 @@ function MainSection() {
 
     const hotKeys = tabs.map((e) => e.hotKey);
 
-    function incrementProgressBar(pressedKey: string) {
-        const hotkey = pressedKey.toUpperCase().replace(/\s+/g, "");
-        const foundTab = tabs.find(
-            (tab: Tab) =>
-                tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey
-        );
-        if(!foundTab) {
-            return;
-        }
-        if (
-            foundTab &&
-            foundTab.current + 1 === foundTab.max &&
-            achievements[1].unlocked === false
-        ) {
-            window.alert("Achievement Unlocked: Complete A Task");
-            unlock(2);
-        }
+function incrementProgressBar(pressedKey: string) {
+    const hotkey = pressedKey.toUpperCase().replace(/\s+/g, "");
+    const foundTab = tabs.find(
+        (tab: Tab) =>
+            tab.hotKey.toUpperCase().replace(/\s+/g, "") === hotkey
+    );
+    if(!foundTab) {
+        return;
+    }
+    if (
+        foundTab &&
+        foundTab.current + 1 === foundTab.max &&
+        achievements[1].unlocked === false
+    ) {
+        window.alert("Achievement Unlocked: Complete A Task");
+        unlock(2);
+    }
 
-if (foundTab.current + 1 === foundTab.max) {
-    setTotalTaskCompletion(totalTaskCompletion + 1);
-    foundTab.completionCount++;
-setTabs((prev) => 
-  prev.map((e) =>  
-    e.id === foundTab.id ? {...e, current: -1} : e  //if i use "0" im not getting zero in the progress bar im getting "1" and this is the quickest sol
-  )
-)
-}
-
+    if (foundTab.current + 1 === foundTab.max) {
+        setTotalTaskCompletion(totalTaskCompletion + 1);
+        foundTab.completionCount++;
+        setTabs((prev) => 
+            prev.map((e) =>  
+                e.id === foundTab.id ? {...e, current: -1} : e  //if i use "0" im not getting zero in the progress bar im getting "1" and this is the quickest sol
+            )
+        )
+    }
 
         setTabs((prevTabs: Tab[]) =>
             prevTabs.map((tab) =>
