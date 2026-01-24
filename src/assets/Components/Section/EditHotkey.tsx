@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
 import { type EditHotKeyFormData } from "./store";
 
 function EditHotkey() {
-    const { currentTab, setTabs, setComponentVisibility } = useContext(TabNumberContext)!;
-
+    const { currentTab,tabs, setTabs, setComponentVisibility } = useContext(TabNumberContext)!;
+    const [errorMsg, setErrorMsg] = useState(false)
     const { register, handleSubmit } = useForm({
         defaultValues: {
             hotKey0: "1",
@@ -14,8 +14,12 @@ function EditHotkey() {
     });
 
     const onSubmit = (data: EditHotKeyFormData) => {
-        const newHotKey = `${data.hotKey0}+${data.hotKey1}`
-        console.log(newHotKey)
+const newHotKey = `${data.hotKey0.toUpperCase()}+${data.hotKey1.toUpperCase()}`
+const allTabsHotKey = tabs.map((e) => e.hotKey)
+const hotKeysDuplicateCheck = [newHotKey, ...allTabsHotKey]
+const hasDuplicate = hotKeysDuplicateCheck.some((item, index) => hotKeysDuplicateCheck.indexOf(item) !== index);
+console.log(newHotKey)
+if(!hasDuplicate){
         setTabs((prev) =>
             prev.map((tab, index) =>
                 index === currentTab
@@ -23,6 +27,15 @@ function EditHotkey() {
                     : tab
             )
         )
+        setErrorMsg(false);
+        setComponentVisibility((prev) => ({
+            ...prev,
+            editHotKey: false
+        }))
+    }else {
+        setErrorMsg(true)
+        return;
+    }
     }
 
     return (
@@ -62,7 +75,10 @@ function EditHotkey() {
                         </div>
                     </div>
 
-                    <button type="submit" className="mt-6 w-full transform rounded-lg bg-linear-to-r from-cyan-600 to-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all duration-300 hover:scale-[1.02] hover:from-cyan-500 hover:to-blue-500 hover:shadow-cyan-500/50 active:scale-[0.98]">
+{errorMsg && (
+    <p className="text-center text-red-700 text-sm">{errorMsg ? "Duplicate HotKey Detected Please Choose A Different HotKey" : ""}</p>
+)}
+                    <button type="submit" className=" w-full transform rounded-lg bg-linear-to-r from-cyan-600 to-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all duration-300 hover:scale-[1.02] hover:from-cyan-500 hover:to-blue-500 hover:shadow-cyan-500/50 active:scale-[0.98]">
                         Save Changes
                     </button>
                 </form>

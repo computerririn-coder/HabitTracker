@@ -6,9 +6,9 @@ import { useComponentVisibility, useStore, useTotalTabCreatedCount, type FormDat
 function AddNewTab() {
     //From store(zustand)
     const unlock = useStore((state) => state.unlock);
-    const totalTabCreatedCount = useTotalTabCreatedCount((state) => state.totalTabCreatedCount)
-    const incrementTabCount = useTotalTabCreatedCount((state) => state.incrementTabCount)
-    const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
+    const totalTabCreatedCount = useTotalTabCreatedCount((state) => state.totalTabCreatedCount);
+    const incrementTabCount = useTotalTabCreatedCount((state) => state.incrementTabCount);
+    const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility);
 
     const { tabs, setTabs, setTabCount } = useContext(TabNumberContext)!;
     const [existingKeyMsg, setExistingKeyMsg] = useState(false);
@@ -23,7 +23,7 @@ function AddNewTab() {
     });
 
     const onSubmit = (data: FormData) => {
-        const newHotKey = `${data.hotKey}+${data.hotKey2}`;
+        const newHotKey = `${data.hotKey.toUpperCase()}+${data.hotKey2.toUpperCase()}`;
         const existingHotKeys = tabs.map(e => e.hotKey);
 
         if (existingHotKeys.includes(newHotKey)) {

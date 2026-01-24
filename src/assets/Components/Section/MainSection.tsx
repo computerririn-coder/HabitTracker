@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import { TabNumberContext } from "./TasksBar.tsx";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useStore, useComponentVisibility } from "./store.ts";
@@ -6,9 +6,10 @@ import { motion } from "framer-motion";
 import type { ProgressTrackerProps, Box1Props, Box2Props, Box3Props, Box4Props, Tab  } from './store.ts';
 import { useTotalTaskCompletion } from "./store.ts";
 import axios from 'axios';
+import React from "react";
 
 function ProgressTracker({ current, max, incrementProgressBar, hotKey }: ProgressTrackerProps) {
-    const percentage = Math.min(Math.round((current / max) * 100), 100);
+    const percentage = useMemo(() => Math.min(Math.round((current / max) * 100), 100),[current, max]);
     const [quotes, setQuotes] = useState("");
     const randomNum = Math.floor(Math.random() * 3);
 const fallbackQuotes = [
@@ -86,6 +87,7 @@ const fallbackQuotes = [
     );
 }
 
+
 /* Top-left small box */
 function Box1({ currentSetting }: Box1Props) {
     return (
@@ -144,7 +146,7 @@ function Box2({ dateHistory }: Box2Props) {
 }
 
 /* Top-right box */
-function Box3({
+const Box3 = React.memo(({
     name,
     current,
     max,
@@ -152,7 +154,7 @@ function Box3({
     componentVisibility,
     setComponentVisibility,
     completionCount,
-}: Box3Props) {
+}: Box3Props) => {
     return (
         <div className="flex flex-col gap-4 h-full p-2 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
             <div className="flex flex-row">
@@ -227,10 +229,10 @@ function Box3({
             </div>
         </div>
     );
-}
+});
 
 /* Bottom full-width box */
-function Box4({ tabs, currentTab }: Box4Props) {
+const Box4 = React.memo(({ tabs, currentTab }: Box4Props) => {
     return (
         <div className="flex flex-col gap-3 h-full p-4 rounded-lg from-slate-800 via-slate-900 to-slate-950 overflow-auto border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
             <h1 className="pb-2 text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20">
@@ -283,7 +285,7 @@ function Box4({ tabs, currentTab }: Box4Props) {
             </div>
         </div>
     );
-}
+});
 
 function MainSection() {
     //from store(zustand)
