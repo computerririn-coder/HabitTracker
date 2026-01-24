@@ -1,5 +1,3 @@
-
-
 import { Zap, Award } from 'lucide-react';
 import { useComponentVisibility, useTotalTaskCompletion } from './Section/store';
 
@@ -21,28 +19,27 @@ const { totalTaskCompletion } = useTotalTaskCompletion();
       </div>
 
 
-      <div className="flex items-center gap-4">
-<button
-  onClick={() => {
-    localStorage.clear();
-    window.location.reload();
-  }}
-  className="hidden sm:flex items-center gap-2 bg-linear-to-r from-red-500/20 to-red-600/20 border border-red-500/30 rounded-lg px-3 py-1.5 hover:from-red-500/30 hover:to-red-600/30 transition-all"
->
-  <span className="text-sm font-semibold text-red-300">Reset</span>
-</button>
+      <div className="flex items-center gap-2 md:gap-4">
+        <button
+          onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+          className="flex items-center gap-1 md:gap-2 bg-linear-to-r from-red-500/20 to-red-600/20 border border-red-500/30 rounded-lg px-2 md:px-3 py-1 md:py-1.5 hover:from-red-500/30 hover:to-red-600/30 transition-all"
+        >
+          <span className="text-xs md:text-sm font-semibold text-red-300">Reset</span>
+        </button>
 
-        <div className="flex items-center gap-2 bg-linear-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 rounded-lg px-3 py-1.5
-         hover:from-orange-500/30 hover:to-yellow-500/30 transition-all"
+        <div className="flex items-center gap-1 md:gap-2 bg-linear-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 rounded-lg px-2 md:px-3 py-1 md:py-1.5 hover:from-orange-500/30 hover:to-yellow-500/30 transition-all cursor-pointer"
         onClick={() => setComponentVisibility({...componentVisibility, achievementsVisibility: true})}>
-          <Zap className="w-4 h-4 text-yellow-400" />
-          <span className="text-sm font-semibold text-orange-300">Achievements Tab</span>
+          <Zap className="w-3 h-3 md:w-4 md:h-4 text-yellow-400" />
+          <span className="text-xs md:text-sm font-semibold text-orange-300">Achievements</span>
         </div>
 
       
-        <div className="hidden sm:flex items-center gap-2 bg-linear-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg px-3 py-1.5 hover:from-purple-500/30 hover:to-pink-500/30 transition-all">
-          <Award className="w-4 h-4 text-purple-400" />
-          <span className="text-sm font-semibold text-purple-300">{totalTaskCompletion} completions</span>
+        <div className="flex items-center gap-1 md:gap-2 bg-linear-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg px-2 md:px-3 py-1 md:py-1.5 hover:from-purple-500/30 hover:to-pink-500/30 transition-all">
+          <Award className="w-3 h-3 md:w-4 md:h-4 text-purple-400" />
+          <span className="text-xs md:text-sm font-semibold text-purple-300">{totalTaskCompletion}</span>
         </div>
       </div>
     </nav>
