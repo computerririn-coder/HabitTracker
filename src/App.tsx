@@ -7,6 +7,7 @@ import Footer from './assets/Components/Footer.tsx'
 import TasksBar from './assets/Components/Section/TasksBar.tsx'
 import Achievements from './assets/Components/Section/Achievements.tsx'
 import { useComponentVisibility } from './assets/Components/Section/store.ts'
+import Testing from './assets/Components/Section/Testing.tsx'
 
 
 function App() {

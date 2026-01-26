@@ -167,8 +167,7 @@ function TasksBar() {
             </section>
 
             <div className="absolute w-screen h-1 bg-linear-to-r from-cyan-600 to-blue-600 shadow-lg shadow-cyan-500/30"></div>
-
-            <MainSection />
+<MainSection/>
             {componentVisibility.addNewTab && (
                 <AddNewTab/>
             )}
