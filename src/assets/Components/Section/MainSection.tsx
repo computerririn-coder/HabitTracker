@@ -1,5 +1,5 @@
-//@ts-nocheck 
-//temporarily disabling typescript so i can push it to github and update my deployed vercel app,will fix typescript later
+//@ts-nocheck
+//temporarily disabling typescript so i can push it to github and update my deployed vercel app,will fix typescript laterfppfpp
 import { useContext, useEffect, useState, useMemo } from 'react';
 import { TabNumberContext } from './TasksBar.tsx';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -23,6 +23,8 @@ function ProgressTracker({
   max,
   incrementProgressBar,
   hotKey,
+  totalCompletionColor,
+  setTotalCompletionColor,
 }: ProgressTrackerProps) {
   const percentage = useMemo(
     () => Math.min(Math.round((current / max) * 100), 100),
@@ -40,7 +42,7 @@ function ProgressTracker({
     async function getMotivationalQuotes() {
       try {
         const response = await axios.get(
-          'https://quoteslate.vercel.app/api/quotes/random/Disabled' //Disabled when thers /Disabled
+          'https://quoteslate.vercel.app/api/quotes/random/Disabled' //Disabled when theres /Disabled
         );
         setQuotes(response.data.quote);
       } catch (error) {
@@ -57,7 +59,7 @@ function ProgressTracker({
   }, []);
 
   return (
-    <div className="relative flex flex-col w-full md:h-full h-80 rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
+    <div className="relative flex flex-col w-full  h-75 md:h-full rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
       {/* Progress pill at top */}
       <div className="relative flex flex-row items-center justify-center w-[40%] px-8 py-6 mt-5 mx-auto rounded-full bg-slate-900/50 border border-cyan-700/50 z-10">
         <div className="text-center">
@@ -168,13 +170,15 @@ const Box3 = React.memo(
     tabs,
     currentTab,
     setTabs,
+    totalCompletionColor,
   }: Box3Props) => {
     useEffect(() => {}, []);
     function decrementCurrent(tabs, currentTab) {
-
       setTabs((prev) =>
         prev.map((tabs, index) =>
-          index === currentTab ? { ...tabs, current: current === 0 ? current : current - 1 } : tabs
+          index === currentTab
+            ? { ...tabs, current: current === 0 ? current : current - 1 }
+            : tabs
         )
       );
     }
@@ -294,7 +298,13 @@ const Box3 = React.memo(
             </div>
 
             {/*Total Completion */}
-            <div className="flex flex-col items-center justify-center px-4 py-3 rounded-lg bg-slate-900/50 border border-cyan-700/50">
+<div
+  className={`flex flex-col items-center justify-center px-4 py-3 rounded-lg transition-all duration-700 ${
+    totalCompletionColor 
+      ? "bg-blue-800/50 shadow-2xl shadow-blue-500/80 scale-101 border border-blue-400" 
+      : "bg-slate-900/50 border border-cyan-700/50"
+  }`}
+>
               <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
                 Total Completions
               </span>
@@ -381,14 +391,16 @@ function MainSection() {
     useTotalTaskCompletion();
 
   const { currentTab, tabs, setTabs } = useContext(TabNumberContext)!;
-
   const hotKeys = tabs.map((e) => e.hotKey);
+  const [totalCompletionColor, setTotalCompletionColor] = useState(false);
 
   function incrementProgressBar(pressedKey: string) {
     const hotkey = pressedKey.toUpperCase().replace(/\s+/g, '');
     const foundTab = tabs.find(
       (tab: Tab) => tab.hotKey.toUpperCase().replace(/\s+/g, '') === hotkey
     );
+    const current = foundTab.current;
+    const max = foundTab?.max;
     if (!foundTab) {
       return;
     }
@@ -409,6 +421,13 @@ function MainSection() {
           (e) => (e.id === foundTab.id ? { ...e, current: -1 } : e) //if i use "0" im not getting zero in the progress bar im getting "1" and this is the quickest sol
         )
       );
+    }
+
+    if (current === max - 1) {
+      setTotalCompletionColor(true);
+      setTimeout(() => {
+        setTotalCompletionColor(false);
+      }, 500)
     }
 
     setTabs((prevTabs: Tab[]) =>
@@ -456,6 +475,8 @@ function MainSection() {
               max={tabs[currentTab].max}
               incrementProgressBar={incrementProgressBar}
               hotKey={tabs[currentTab].hotKey}
+              totalCompletionColor={totalCompletionColor}
+              setTotalCompletionColor={setTotalCompletionColor}
             />
           </motion.div>
 
@@ -463,7 +484,7 @@ function MainSection() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 row-span-1">
               <div className="grid grid-rows-3 gap-6">
                 <motion.div
-                  className="row-span-2 pt-15 md:pt-0"
+                  className="row-span-2 pt-10 md:pt-0"
                   initial={
                     hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
                   }
@@ -504,6 +525,7 @@ function MainSection() {
                   currentTab={currentTab}
                   tabs={tabs}
                   setTabs={setTabs}
+                  totalCompletionColor={totalCompletionColor}
                 />
               </motion.div>
             </div>
