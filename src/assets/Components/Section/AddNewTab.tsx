@@ -19,6 +19,7 @@ function AddNewTab() {
             max: 10,
             hotKey: "1",
             hotKey2: "Q",
+            totalCompletionColor: false
         },
     });
 

@@ -59,7 +59,7 @@ function ProgressTracker({
   }, []);
 
   return (
-    <div className="relative flex flex-col w-full  h-75 md:h-full rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
+    <div className="relative flex flex-col w-full md:h-full h-80 rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
       {/* Progress pill at top */}
       <div className="relative flex flex-row items-center justify-center w-[40%] px-8 py-6 mt-5 mx-auto rounded-full bg-slate-900/50 border border-cyan-700/50 z-10">
         <div className="text-center">
@@ -107,13 +107,22 @@ function ProgressTracker({
 /* Top-left small box */
 function Box1({ currentSetting }: Box1Props) {
   return (
-    <div className="flex flex-col gap-2 h-full p-4 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
+    <div className="flex flex-col gap-2 h-30 p-4 rounded-lg bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
       <h1 className="text-sm text-cyan-300 uppercase tracking-wide">
-        Current HotKey
+        Current HotKey{' '}
+        <span className="text-[6px] text-red-600 md:hidden">
+          *Only For Devices With Physcial Keyboard*
+        </span>
       </h1>
 
       <div className="flex flex-1 items-center justify-center rounded-xl bg-slate-900/50 border border-cyan-700/50">
-        <span className="text-4xl font-bold text-cyan-50">
+        <span className="text-4xl      
+        
+        si
+        
+        
+        
+        md:text-4xl font-bold text-cyan-50">
           {currentSetting}
         </span>
       </div>
@@ -171,9 +180,11 @@ const Box3 = React.memo(
     currentTab,
     setTabs,
     totalCompletionColor,
+    tabTracker,
   }: Box3Props) => {
     useEffect(() => {}, []);
     function decrementCurrent(tabs, currentTab) {
+      const totalColorCompletion = tabs[tabTracker].totalColorCompletion;
       setTabs((prev) =>
         prev.map((tabs, index) =>
           index === currentTab
@@ -298,13 +309,13 @@ const Box3 = React.memo(
             </div>
 
             {/*Total Completion */}
-<div
-  className={`flex flex-col items-center justify-center px-4 py-3 rounded-lg transition-all duration-700 ${
-    totalCompletionColor 
-      ? "bg-blue-800/50 shadow-2xl shadow-blue-500/80 scale-101 border border-blue-400" 
-      : "bg-slate-900/50 border border-cyan-700/50"
-  }`}
->
+            <div
+              className={`flex flex-col items-center justify-center px-4 py-3 rounded-lg transition-all duration-700 ${
+                totalCompletionColor
+                  ? 'bg-blue-800/50 shadow-2xl shadow-blue-500/80 scale-101 border border-blue-400'
+                  : 'bg-slate-900/50 border border-cyan-700/50'
+              }`}
+            >
               <span className="mb-1 text-xs text-cyan-300 uppercase tracking-wide">
                 Total Completions
               </span>
@@ -320,7 +331,7 @@ const Box3 = React.memo(
 );
 
 /* Bottom full-width box */
-const Box4 = React.memo(({ tabs, currentTab }: Box4Props) => {
+const Box4 = React.memo(({ tabs, currentTab, tabTracker }: Box4Props) => {
   const isEmpty = tabs?.length === 1;
 
   return (
@@ -337,11 +348,16 @@ const Box4 = React.memo(({ tabs, currentTab }: Box4Props) => {
                 Math.round((e.current / e.max) * 100),
                 100
               );
+              const isCompleted = e.totalCompletionColor;
 
               return (
                 <div
                   key={i}
-                  className="flex flex-col gap-1 w-[32.3%] rounded-lg bg-slate-900/50 border border-cyan-700/50"
+                  className={`flex flex-col gap-1 w-[32.3%] rounded-lg transition-all duration-700 ${
+                    isCompleted
+                      ? 'bg-blue-800/50 shadow-2xl shadow-blue-500/80 scale-101 border border-blue-400'
+                      : 'bg-slate-900/50 border border-cyan-700/50'
+                  }`}
                 >
                   <div className="flex items-center gap-2 px-3 pt-1">
                     <span className="text-xs text-cyan-300">Name:</span>
@@ -393,7 +409,7 @@ function MainSection() {
   const { currentTab, tabs, setTabs } = useContext(TabNumberContext)!;
   const hotKeys = tabs.map((e) => e.hotKey);
   const [totalCompletionColor, setTotalCompletionColor] = useState(false);
-
+  const [tabTracker, setTabTracker] = useState(0); //to track tab ,this is for tabs.totalColorCompletion(the animation on Box4 all tasks list)
   function incrementProgressBar(pressedKey: string) {
     const hotkey = pressedKey.toUpperCase().replace(/\s+/g, '');
     const foundTab = tabs.find(
@@ -423,11 +439,29 @@ function MainSection() {
       );
     }
 
-    if (current === max - 1) {
+    if (current === max - 1 && currentTab === foundTab.id) {
       setTotalCompletionColor(true);
       setTimeout(() => {
         setTotalCompletionColor(false);
-      }, 500)
+      }, 500);
+    } else if (current === max - 1 && currentTab !== foundTab.id) {
+      setTabs((prev) =>
+        prev.map((tabs) =>
+          tabs.id === foundTab.id
+            ? { ...tabs, totalCompletionColor: true }
+            : tabs
+        )
+      );
+      setTimeout(() => {
+        setTabs((prev) =>
+          prev.map((tabs) =>
+            tabs.id === foundTab.id
+              ? { ...tabs, totalCompletionColor: false }
+              : tabs
+          )
+        );
+      }, 500);
+      setTabTracker(foundTab.id);
     }
 
     setTabs((prevTabs: Tab[]) =>
@@ -484,7 +518,7 @@ function MainSection() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 row-span-1">
               <div className="grid grid-rows-3 gap-6">
                 <motion.div
-                  className="row-span-2 pt-10 md:pt-0"
+                  className="row-span-2 pt-15 md:pt-0"
                   initial={
                     hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
                   }
@@ -526,6 +560,7 @@ function MainSection() {
                   tabs={tabs}
                   setTabs={setTabs}
                   totalCompletionColor={totalCompletionColor}
+                  tabTracker={tabTracker}
                 />
               </motion.div>
             </div>
@@ -538,7 +573,11 @@ function MainSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Box4 tabs={tabs} currentTab={currentTab} />
+              <Box4
+                tabs={tabs}
+                currentTab={currentTab}
+                tabTracker={tabTracker}
+              />
             </motion.div>
           </div>
         </div>

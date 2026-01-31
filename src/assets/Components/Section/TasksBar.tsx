@@ -129,6 +129,7 @@ function TasksBar() {
             hotKey: '2+k',
             dateHistory: ['Sample', 'Sample2'],
             completionCount: 1,
+            totalCompletionColor: false 
           },
         ];
   });
