@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
-import { useComponentVisibility, useStore, useTotalTabCreatedCount, type FormData } from './store'
+import { useAchievementCount, useComponentVisibility, useStore, useTotalTabCreatedCount, type FormData } from './store'
 
 function AddNewTab() {
     //From store(zustand)
@@ -9,6 +9,7 @@ function AddNewTab() {
     const totalTabCreatedCount = useTotalTabCreatedCount((state) => state.totalTabCreatedCount);
     const incrementTabCount = useTotalTabCreatedCount((state) => state.incrementTabCount);
     const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility);
+    const incrementAchievementCount = useAchievementCount((state) => state.incrementAchievementCount);
 
     const { tabs, setTabs, setTabCount } = useContext(TabNumberContext)!;
     const [existingKeyMsg, setExistingKeyMsg] = useState(false);
@@ -38,6 +39,7 @@ function AddNewTab() {
             unlock(1);
             window.alert("Achievement Unlock");
             incrementTabCount();
+            incrementAchievementCount();
         }
 
         const newTab = {
@@ -60,9 +62,7 @@ function AddNewTab() {
         }));
     };
 
-    useEffect(() => {
-        console.log(totalTabCreatedCount)
-    }, [])
+
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">

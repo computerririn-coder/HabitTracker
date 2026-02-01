@@ -1,22 +1,24 @@
 import { Zap, Award } from 'lucide-react';
 import { useComponentVisibility, useTotalTaskCompletion } from './Section/store';
-
+import { useAchievementCount } from './Section/store';
 function NavigationBar() {
   //from store
 const componentVisibility = useComponentVisibility((state) => state.componentVisibility)
 const setComponentVisibility = useComponentVisibility((state) => state.setComponentVisibility)
 const { totalTaskCompletion } = useTotalTaskCompletion();
-
+const achievementCount = useAchievementCount((state) => state.count);
 
   return (
     <nav className="w-full h-14 bg-linear-to-r from-slate-900 to-slate-950 flex items-center justify-between px-6 border-b border-cyan-500/30 shadow-lg shadow-cyan-500/10">
 
-      <div className="min-w-42 h-9 flex items-center gap-2 bg-linear-to-r from-cyan-600 to-blue-600 rounded-2xl pr-3 shadow-lg shadow-cyan-500/30">
-        <div className="w-8 h-9 bg-cyan-500 rounded-md flex items-center justify-center">
-          <span className="text-white font-bold text-lg">✓</span>
-        </div>
-        <span className="text-md md:text-xl font-extrabold text-cyan-50">Task Tracker</span>
-      </div>
+<div className="pr-1 h-8 sm:h-10 flex items-center gap-2 bg-linear-to-r from-cyan-600 to-blue-600 rounded-2xl  shadow-lg shadow-cyan-500/30 sm:pr-5">
+  <div className="w-8 sm:w-10 h-8 sm:h-10 bg-cyan-500 rounded-lg flex items-center justify-center">
+    <span className="text-white font-bold text-xl">✓</span>
+  </div>
+  <span className="text-base sm:text-lg md:text-xl font-extrabold text-cyan-50 whitespace-nowrap">
+    Task Tracker
+  </span>
+</div>
 
 
       <div className="flex items-center gap-2 md:gap-4">
@@ -33,7 +35,7 @@ const { totalTaskCompletion } = useTotalTaskCompletion();
         <div className="flex items-center gap-1 md:gap-2 bg-linear-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 rounded-lg px-2 md:px-3 py-1 md:py-1.5 hover:from-orange-500/30 hover:to-yellow-500/30 transition-all cursor-pointer"
         onClick={() => setComponentVisibility({...componentVisibility, achievementsVisibility: true})}>
           <Zap className="w-3 h-3 md:w-4 md:h-4 text-yellow-400" />
-          <span className="text-xs md:text-sm font-semibold text-orange-300">Achievements</span>
+          <span className="text-xs md:text-sm font-semibold text-orange-300">Achievements ({achievementCount === 0 ? "X" : achievementCount})</span>
         </div>
 
       

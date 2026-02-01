@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState, useMemo } from 'react';
 import { TabNumberContext } from './TasksBar.tsx';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useStore, useComponentVisibility } from './store.ts';
+import { useStore, useComponentVisibility, useAchievementCount } from './store.ts';
 import { motion } from 'framer-motion';
 import type {
   ProgressTrackerProps,
@@ -59,7 +59,7 @@ function ProgressTracker({
   }, []);
 
   return (
-    <div className="relative flex flex-col w-full md:h-full h-80 rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
+    <div className="relative flex flex-col w-full md:h-full h-100 rounded-lg overflow-hidden bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
       {/* Progress pill at top */}
       <div className="relative flex flex-row items-center justify-center w-[40%] px-8 py-6 mt-5 mx-auto rounded-full bg-slate-900/50 border border-cyan-700/50 z-10">
         <div className="text-center">
@@ -116,13 +116,15 @@ function Box1({ currentSetting }: Box1Props) {
       </h1>
 
       <div className="flex flex-1 items-center justify-center rounded-xl bg-slate-900/50 border border-cyan-700/50">
-        <span className="text-4xl      
+        <span
+          className="text-4xl      
         
         si
         
         
         
-        md:text-4xl font-bold text-cyan-50">
+        md:text-4xl font-bold text-cyan-50"
+        >
           {currentSetting}
         </span>
       </div>
@@ -335,7 +337,7 @@ const Box4 = React.memo(({ tabs, currentTab, tabTracker }: Box4Props) => {
   const isEmpty = tabs?.length === 1;
 
   return (
-    <div className="flex flex-col gap-3 h-full p-4 rounded-lg from-slate-800 via-slate-900 to-slate-950 overflow-auto border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
+    <div className="flex flex-col gap-3 min-h-60 p-4 rounded-lg from-slate-800 via-slate-900 to-slate-950 overflow-auto border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
       <h1 className="pb-2 text-sm text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20">
         All Tasks List
       </h1>
@@ -405,7 +407,8 @@ function MainSection() {
   const unlock = useStore((state) => state.unlock);
   const { totalTaskCompletion, setTotalTaskCompletion } =
     useTotalTaskCompletion();
-
+  const incrementAchievementCount = useAchievementCount((state) => state.incrementAchievementCount)
+     
   const { currentTab, tabs, setTabs } = useContext(TabNumberContext)!;
   const hotKeys = tabs.map((e) => e.hotKey);
   const [totalCompletionColor, setTotalCompletionColor] = useState(false);
@@ -427,6 +430,7 @@ function MainSection() {
     ) {
       window.alert('Achievement Unlocked: Complete A Task');
       unlock(2);
+      incrementAchievementCount();
     }
 
     if (foundTab.current + 1 === foundTab.max) {
@@ -494,11 +498,11 @@ function MainSection() {
   }, []);
 
   return (
-    <section className="w-full min-h-[85vh] px-8 pb-6 md:pb-4 bg-slate-950">
+    <section className="w-full min-h-[85vh] px-8  bg-slate-950 lg:w-full md:my-auto">
       <div className="flex flex-col gap-6">
-        <div className="grid grid-cols-1 xl:grid-cols-3 flex-1 gap-10 pt-10">
+<div className="flex flex-col md:grid md:grid-cols-1 xl:grid-cols-3 flex-1 gap-10 pt-5  md:pt-0">
           <motion.div
-            className="col-span-1 w-full md:w-[104%] xl:w-full h-60 xl:h-full mx-auto"
+            className="col-span-1 w-full md:w-[104%] xl:w-full h-60 xl:h-full mx-auto pb-80 md:pb-0"
             initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -514,11 +518,11 @@ function MainSection() {
             />
           </motion.div>
 
-          <div className="grid grid-rows-2 gap-6 col-span-1 md:col-span-2 w-full h-full">
+<div className="grid grid-rows-[auto_minmax(0,1fr)] gap-6 col-span-1 md:col-span-2 w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 row-span-1">
               <div className="grid grid-rows-3 gap-6">
                 <motion.div
-                  className="row-span-2 pt-15 md:pt-0"
+                  className="row-span-2  md:pt-0 order-2 md:order-1"
                   initial={
                     hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
                   }
@@ -529,7 +533,7 @@ function MainSection() {
                 </motion.div>
 
                 <motion.div
-                  className="row-span-7"
+                  className="row-span-7 order-1 md:order-2 pt-15 sm:pt-0"
                   initial={
                     hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
                   }
@@ -566,7 +570,7 @@ function MainSection() {
             </div>
 
             <motion.div
-              className="row-span-1"
+              className="row-span-1 h-auto pb-5 "
               initial={
                 hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
               }

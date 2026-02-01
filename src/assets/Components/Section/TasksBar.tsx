@@ -128,7 +128,7 @@ function TasksBar() {
             name: 'Drink Water',
             hotKey: '2+k',
             dateHistory: ['Sample', 'Sample2'],
-            completionCount: 1,
+            completionCount: 0,
             totalCompletionColor: false 
           },
         ];
