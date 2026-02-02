@@ -66,7 +66,7 @@ function TabBar({
 
   return (
     <>
-      <div className="relative flex flex-row items-center max-w-48 h-8 px-4 rounded-t-xl bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 border border-cyan-500/30 shadow-lg transition-colors cursor-pointer">
+      <div className=" relative flex flex-row items-center max-w-48 h-8 px-4 rounded-t-xl bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 border border-cyan-500/30 shadow-lg transition-colors cursor-pointer">
         <div className="flex items-center flex-1 min-w-0">
           <div className="w-4 h-4 rounded-full bg-cyan-500 shrink-0"></div>
           <span className="ml-2 text-sm font-medium text-cyan-50 truncate">
@@ -161,7 +161,7 @@ function TasksBar() {
     >
       <section className="flex items-center justify-between w-full h-[5vh] px-4 md:px-10 md:gap-10 bg-linear-to-r from-slate-900 to-slate-950 border-b border-cyan-500/20">
         {/* Desktop view - show all tabs */}
-        <div className="hidden md:flex items-center gap-10 flex-1">
+        <div className="hidden md:flex items-center gap-10 flex-1 mt-auto">
           {tabs.map((e: Tab) => (
             <div
               key={e.id}

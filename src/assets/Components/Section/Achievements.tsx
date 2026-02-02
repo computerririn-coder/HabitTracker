@@ -50,8 +50,8 @@ function Achievements() {
     }, [achievements])
 
     return (
-        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-            <div className="flex max-h-[90vh] w-full max-w-4xl flex-col rounded-2xl border border-cyan-500/30 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20">
+        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm ">
+            <div className="2xl:h-screen 2xl:max-h-[60vh] flex max-h-[90vh] w-full max-w-4xl flex-col rounded-2xl border border-cyan-500/30 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20">
                 {/* Header */}
                 <div className="relative border-b border-cyan-500/20 p-6">
                     <div className="flex items-center justify-between">

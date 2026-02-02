@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, } from "react";
 import { useForm } from "react-hook-form";
 import { TabNumberContext } from "./TasksBar";
 import { useAchievementCount, useComponentVisibility, useStore, useTotalTabCreatedCount, type FormData } from './store'
@@ -49,6 +49,7 @@ function AddNewTab() {
             hotKey: newHotKey,
             dateHistory: [],
             completionCount: 0,
+            totalCompletionColor: false,
         };
 
         setTabs((prev) =>
@@ -65,8 +66,8 @@ function AddNewTab() {
 
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="mx-4 w-full max-w-md rounded-2xl border border-cyan-500/30 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm  2xl:scale-160">
+            <div className="  mx-4 w-full max-w-md rounded-2xl border border-cyan-500/30 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 shadow-2xl shadow-cyan-500/20">
                 {/* Header */}
                 <div className="relative border-b border-cyan-500/20 p-6">
                     <h2 className="bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-2xl font-bold text-transparent">

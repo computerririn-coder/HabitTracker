@@ -2,6 +2,10 @@
 import { create } from 'zustand';
 import { Target, type LucideIcon } from 'lucide-react';
 
+// ============================================================================
+// TYPESCRIPTS
+// ============================================================================
+
 export type Achievement = {
   id: number;
   name: string;
@@ -47,6 +51,16 @@ export type CompletedTasksCountStore = {
   incrementCompletedTasksCount: () => void;
 };
 
+export type AchievementCountStore = {
+  count: number;
+  incrementAchievementCount: () => void;
+};
+
+export type TotalTaskCompletionStore = {
+  totalTaskCompletion: number;
+  setTotalTaskCompletion: (value: number) => void;
+};
+
 //TaskBar Typescript
 export type Tab = {
   id: number;
@@ -56,6 +70,7 @@ export type Tab = {
   hotKey: string;
   dateHistory: string[];
   completionCount: number;
+  totalCompletionColor: boolean;
 };
 
 //MainSection Typescript
@@ -88,6 +103,12 @@ export type Box3Props = {
       | ((prev: ComponentVisibilityState) => ComponentVisibilityState)
   ) => void;
   completionCount: number;
+  tabs: Tab[];
+  currentTab: number;
+  setTabs: (value: Tab[] | ((prev: Tab[]) => Tab[])) => void;
+  totalCompletionColor: boolean;
+  tabTracker: number;
+
 };
 
 export type Box4Props = {
@@ -127,6 +148,7 @@ export type FormData = {
   max: number;
   hotKey: string;
   hotKey2: string;
+  totalCompletionColor: boolean;
 };
 
 //EditHotKey Typescript
@@ -134,6 +156,10 @@ export type EditHotKeyFormData = {
   hotKey0: string;
   hotKey1: string;
 };
+
+// ============================================================================
+// ZUSTAND STORES
+// ============================================================================
 
 const useStore = create<AchievementStore>((set) => ({
   achievements: (() => {
@@ -191,11 +217,10 @@ const useStore = create<AchievementStore>((set) => ({
 
 export { useStore };
 
-export const useAchievementCount = create((set) => ({
+export const useAchievementCount = create<AchievementCountStore>((set) => ({
   count: 0,
-  incrementAchievementCount: () => set((state: {count: number }) => ({count: state.count + 1}))
-}))
-
+  incrementAchievementCount: () => set((state: AchievementCountStore) => ({count: state.count + 1}))
+}));
 
 const useComponentVisibility = create<ComponentVisibilityStore>((set) => ({
   componentVisibility: {
@@ -244,13 +269,6 @@ const useCompletedTasksCount = create<CompletedTasksCountStore>((set) => ({
 }));
 
 export { useCompletedTasksCount };
-
-//Total task Completion number
-
-type TotalTaskCompletionStore = {
-  totalTaskCompletion: number;
-  setTotalTaskCompletion: (value: number) => void;
-};
 
 const useTotalTaskCompletion = create<TotalTaskCompletionStore>((set) => ({
   totalTaskCompletion: parseInt(
