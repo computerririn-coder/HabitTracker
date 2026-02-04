@@ -108,7 +108,6 @@ export type Box3Props = {
   setTabs: (value: Tab[] | ((prev: Tab[]) => Tab[])) => void;
   totalCompletionColor: boolean;
   tabTracker: number;
-
 };
 
 export type Box4Props = {
@@ -219,7 +218,8 @@ export { useStore };
 
 export const useAchievementCount = create<AchievementCountStore>((set) => ({
   count: 0,
-  incrementAchievementCount: () => set((state: AchievementCountStore) => ({count: state.count + 1}))
+  incrementAchievementCount: () =>
+    set((state: AchievementCountStore) => ({ count: state.count + 1 })),
 }));
 
 const useComponentVisibility = create<ComponentVisibilityStore>((set) => ({

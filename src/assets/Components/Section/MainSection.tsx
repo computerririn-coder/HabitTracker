@@ -131,8 +131,8 @@ function MainSection() {
   }, []);
 
   return (
-    <section className="w-full md:h-[86.3vh] px-4 py-6 bg-slate-950 xl:h-[84.5vh] 2xl:h-[85vh] ">
-      <div className="flex flex-col gap-6  mx-auto md:grid md:grid-cols-3 md:grid-rows-4 md:h-[75vh] mt-8 xl:mt-3  2xl:mt-16 px-10">
+    <section className="md:h-[84vh] px-4 py-6 bg-slate-950 xl:h-[82.5vh] 2xl:h-[85vh] flex flex-col items-center justify-center">
+      <div className="w-[90%] flex flex-col gap-6 md:grid md:grid-cols-3 md:grid-rows-4 md:h-[75vh]">
         {/* Progress Tracker */}
         <motion.div
           initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}

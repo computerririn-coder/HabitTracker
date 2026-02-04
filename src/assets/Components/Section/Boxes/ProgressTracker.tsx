@@ -45,9 +45,15 @@ function ProgressTracker({
       {/* Progress pill at top */}
       <div className="relative flex flex-row items-center justify-center w-[60%] px-4 py-4 mt-4 mx-auto rounded-full border border-cyan-700/50 bg-slate-900/50 z-10">
         <div className="text-center">
-          <span className="font-bold text-cyan-50">{current}</span>
-          <span className="mx-2 text-cyan-400">/</span>
-          <span className="font-bold text-cyan-400">{max}</span>
+          <span className="font-bold text-cyan-50 text-[1em] xl:text-[1.5em]">
+            {current}
+          </span>
+          <span className="mx-2 text-cyan-400 text-[1em] xl:text-[1.5em]">
+            /
+          </span>
+          <span className="font-bold text-cyan-400 text-[1em] xl:text-[1.5em]">
+            {max}
+          </span>
         </div>
       </div>
 
@@ -61,14 +67,14 @@ function ProgressTracker({
 
       {/* Percentage text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="text-3xl font-bold text-cyan-50 drop-shadow-lg">
+        <span className="font-bold text-cyan-50 drop-shadow-lg text-[2em] xl:text-[3em]">
           {percentage}%
         </span>
       </div>
 
       {/* Motivational Quote */}
       <div className="absolute bottom-16 left-0 right-0 px-4 z-10">
-        <p className="text-sm font-medium text-center italic leading-relaxed text-cyan-50 drop-shadow-lg">
+        <p className="font-medium text-center italic leading-relaxed text-cyan-50 drop-shadow-lg text-[0.875em] xl:text-[1.25em] mb-10">
           "{quotes}"
         </p>
       </div>
@@ -76,7 +82,7 @@ function ProgressTracker({
       {/* Manual Increase button */}
       <div className="absolute bottom-4 left-0 right-0 flex justify-center z-10">
         <button
-          className="px-4 py-2 font-semibold text-cyan-50 rounded-lg border border-cyan-400 shadow-lg transition-all duration-300 transform bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 hover:shadow-cyan-500/50 hover:scale-105"
+          className="px-4 py-2 font-semibold text-cyan-50 rounded-lg border border-cyan-400 shadow-lg transition-all duration-300 transform bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 hover:shadow-cyan-500/50 hover:scale-105 text-[1em] xl:text-[1.5em]"
           onClick={() => incrementProgressBar(hotKey)}
         >
           Manual Increase

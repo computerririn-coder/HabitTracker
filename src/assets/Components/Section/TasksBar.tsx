@@ -66,10 +66,10 @@ function TabBar({
 
   return (
     <>
-      <div className=" relative flex flex-row items-center max-w-48 h-8 px-4 rounded-t-xl bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 border border-cyan-500/30 shadow-lg transition-colors cursor-pointer">
+      <div className=" relative flex flex-row items-center max-w-48 h-8 xl:h-12 px-4 rounded-t-xl bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 border border-cyan-500/30 shadow-lg transition-colors cursor-pointer">
         <div className="flex items-center flex-1 min-w-0">
           <div className="w-4 h-4 rounded-full bg-cyan-500 shrink-0"></div>
-          <span className="ml-2 text-sm font-medium text-cyan-50 truncate">
+          <span className="ml-2 text-[1em] xl:text-[1.3em] font-medium text-cyan-50 truncate ">
             {id + 1}: {name}
           </span>
         </div>
@@ -115,6 +115,7 @@ function TasksBar() {
 
   const [tabCount, setTabCount] = useState<number>(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [tabNumber, setTabNumber] = useState({ start: 0, end: 1, maxTabs: 0 });
 
   const [tabs, setTabs] = useState<Tab[]>(() => {
     const saveTabs: string | null = localStorage.getItem('tabs');
@@ -129,7 +130,17 @@ function TasksBar() {
             hotKey: '2+k',
             dateHistory: ['Sample', 'Sample2'],
             completionCount: 0,
-            totalCompletionColor: false 
+            totalCompletionColor: false,
+          },
+          {
+            id: 1,
+            current: 0,
+            max: 8,
+            name: 'Exercise',
+            hotKey: '2+e',
+            dateHistory: [],
+            completionCount: 0,
+            totalCompletionColor: false,
           },
         ];
   });
@@ -147,6 +158,30 @@ function TasksBar() {
     setIsMobileMenuOpen(false);
   };
 
+  const getVisibleTabCount = () => {
+    if (window.innerWidth < 640) return 0; // mobile default
+    if (window.innerWidth < 768) return 1; // sm
+    if (window.innerWidth < 1024) return 2; // md
+    if (window.innerWidth < 1280) return 3; // lg
+    if (window.innerWidth < 1536) return 4; // xl
+    return 5; // 2xl
+  };
+  useEffect(() => {
+    const handleResize = () => {
+      const visibleCount = getVisibleTabCount();
+      console.log(visibleCount);
+      setTabNumber((prev) => ({
+        ...prev,
+        maxTabs: visibleCount,
+      }));
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    console.log;
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <TabNumberContext.Provider
       value={{
@@ -159,37 +194,24 @@ function TasksBar() {
         setComponentVisibility,
       }}
     >
-      <section className="flex items-center justify-between w-full h-[5vh] px-4 md:px-10 md:gap-10 bg-linear-to-r from-slate-900 to-slate-950 border-b border-cyan-500/20">
-        {/* Desktop view - show all tabs */}
-        <div className="hidden md:flex items-center gap-10 flex-1 mt-auto">
-          {tabs.map((e: Tab) => (
-            <div
-              key={e.id}
-              onClick={() => setCurrentTab(e.id)}
-              className="pt-2 w-45"
-            >
-              <TabBar
-                id={e.id}
-                name={e.name}
-                isActive={currentTab === e.id}
-                tabs={tabs}
-                setTabs={setTabs}
-                tabCount={tabCount}
-                currentTab={currentTab}
-                setCurrentTab={setCurrentTab}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile view - show only current tab */}
-        <div className="flex md:hidden items-center justify-between px-2">
+      <section className="flex items-center justify-between w-full h-[6vh] sm:h-[5vh] px-4 md:px-10 md:gap-10 bg-linear-to-r from-slate-900 to-slate-950 border-b border-cyan-500/20">
+        {/* Tab navigation with arrows - all screen sizes */}
+        <div className="flex items-center gap-2 flex-1 mt-auto translate-y-1">
           {/* Left Arrow */}
           <button
-            onClick={() => setCurrentTab((prev) => Math.max(0, prev - 1))}
-            disabled={currentTab === 0}
-            className="p-2 disabled:opacity-30 disabled:cursor-not-allowed"
-            aria-label="Previous tab"
+            onClick={() =>
+              setTabNumber((prev) => {
+                if (prev.start <= 0) return prev;
+                return {
+                  ...prev,
+                  start: prev.start - 1,
+                  end: prev.end - 1,
+                };
+              })
+            }
+            disabled={tabNumber.start <= 0}
+            className="p-2 disabled:opacity-30 disabled:cursor-not-allowed text-cyan-400 hover:text-cyan-300 transition-colors"
+            aria-label="Previous tabs"
           >
             <svg
               className="w-5 h-5"
@@ -206,48 +228,77 @@ function TasksBar() {
             </svg>
           </button>
 
-          {/* Current Tab */}
-          <div className="pt-2 flex-1 w-45">
-            <TabBar
-              id={tabs[currentTab]?.id ?? 0}
-              name={tabs[currentTab]?.name ?? 'Task'}
-              isActive={true}
-              tabs={tabs}
-              setTabs={setTabs}
-              tabCount={tabCount}
-              currentTab={currentTab}
-              setCurrentTab={setCurrentTab}
-            />
-          </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={() =>
-              setCurrentTab((prev) => Math.min(tabs.length - 1, prev + 1))
-            }
-            disabled={currentTab === tabs.length - 1}
-            className="p-2 disabled:opacity-30 disabled:cursor-not-allowed"
-            aria-label="Next tab"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Visible Tabs */}
+          <div className="flex items-center gap-2 md:gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 flex-1  w-auto">
+            {tabs
+              .slice(tabNumber.start, tabNumber.end + tabNumber.maxTabs)
+              .map((e: Tab) => (
+                <div
+                  key={e.id}
+                  onClick={() => setCurrentTab(e.id)}
+                  className="pt-2 w-45 "
+                >
+                  <TabBar
+                    id={e.id}
+                    name={e.name}
+                    isActive={currentTab === e.id}
+                    tabs={tabs}
+                    setTabs={setTabs}
+                    tabCount={tabCount}
+                    currentTab={currentTab}
+                    setCurrentTab={setCurrentTab}
+                  />
+                </div>
+              ))}
+            {/* Add new tab button */}
+            <button
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-linear-to-r from-cyan-600 to-blue-600
+           hover:from-cyan-500 hover:to-blue-500 text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110 order-2 md:order-1"
+              onClick={() =>
+                setComponentVisibility({
+                  ...componentVisibility,
+                  addNewTab: true,
+                })
+              }
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
+              +
+            </button>
+            {/* Right Arrow */}
+            <button
+              onClick={() =>
+                setTabNumber((prev) => {
+                  if (prev.end >= tabs.length) return prev;
+                  return {
+                    ...prev,
+                    start: prev.start + 1,
+                    end: prev.end + 1,
+                  };
+                })
+              }
+              disabled={tabNumber.end >= tabs.length - 1}
+              className="p-2 disabled:opacity-30 disabled:cursor-not-allowed text-cyan-400 hover:text-cyan-300 transition-colors order-1 md:order-2"
+              aria-label="Next tabs"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Hamburger menu button - mobile only */}
         <button
-          className="flex md:hidden items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 transition-all order-2"
+          className="flex md:hidden items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 transition-all md:order2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           <div className="flex flex-col gap-1">
@@ -255,20 +306,6 @@ function TasksBar() {
             <span className="w-5 h-0.5 bg-cyan-400 rounded"></span>
             <span className="w-5 h-0.5 bg-cyan-400 rounded"></span>
           </div>
-        </button>
-
-        {/* Add new tab button */}
-        <button
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-linear-to-r from-cyan-600 to-blue-600
-           hover:from-cyan-500 hover:to-blue-500 text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110 order-1"
-          onClick={() =>
-            setComponentVisibility({
-              ...componentVisibility,
-              addNewTab: true,
-            })
-          }
-        >
-          +
         </button>
       </section>
 
