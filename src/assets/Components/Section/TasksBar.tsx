@@ -66,7 +66,8 @@ function TabBar({
 
   return (
     <>
-      <div className=" relative flex flex-row items-center max-w-48 h-8 xl:h-12 px-4 rounded-t-xl bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 border border-cyan-500/30 shadow-lg transition-colors cursor-pointer">
+      <div className={`relative flex flex-row items-center max-w-48 h-8 xl:h-full   px-4 ${isActive ? 'rounded-t-xl' : 'rounded-xl'} bg-linear-to-br from-slate-800 to-slate-900 hover:from-slate-700
+       hover:to-slate-800 border border-cyan-500/30 shadow-lg transition-colors cursor-pointer`}>
         <div className="flex items-center flex-1 min-w-0">
           <div className="w-4 h-4 rounded-full bg-cyan-500 shrink-0"></div>
           <span className="ml-2 text-[1em] xl:text-[1.3em] font-medium text-cyan-50 truncate ">
@@ -86,7 +87,6 @@ function TabBar({
           </span>
         </button>
       </div>
-
       <div
         className={`w-[110%] h-2 p-1 ml-[-5%] rounded-t-md bg-linear-to-r from-cyan-600 to-blue-600 transition-all duration-300 ${
           isActive ? 'opacity-100' : 'opacity-0'
@@ -169,7 +169,6 @@ function TasksBar() {
   useEffect(() => {
     const handleResize = () => {
       const visibleCount = getVisibleTabCount();
-      console.log(visibleCount);
       setTabNumber((prev) => ({
         ...prev,
         maxTabs: visibleCount,
@@ -229,31 +228,33 @@ function TasksBar() {
           </button>
 
           {/* Visible Tabs */}
-          <div className="flex items-center gap-2 md:gap-4 lg:gap-6 xl:gap-8 2xl:gap-10 flex-1  w-auto">
-            {tabs
-              .slice(tabNumber.start, tabNumber.end + tabNumber.maxTabs)
-              .map((e: Tab) => (
-                <div
-                  key={e.id}
-                  onClick={() => setCurrentTab(e.id)}
-                  className="pt-2 w-45 "
-                >
-                  <TabBar
-                    id={e.id}
-                    name={e.name}
-                    isActive={currentTab === e.id}
-                    tabs={tabs}
-                    setTabs={setTabs}
-                    tabCount={tabCount}
-                    currentTab={currentTab}
-                    setCurrentTab={setCurrentTab}
-                  />
-                </div>
-              ))}
+          <div className="flex items-center flex-1 w-auto">
+            <div className="flex items-center gap-10 md:pr-10 xl:-mt-2 2xl:mt-0">
+              {tabs
+                .slice(tabNumber.start, tabNumber.end + tabNumber.maxTabs)
+                .map((e: Tab) => (
+                  <div
+                    key={e.id}
+                    onClick={() => setCurrentTab(e.id)}
+                    className="pt-2 w-45 "
+                  >
+                    <TabBar
+                      id={e.id}
+                      name={e.name}
+                      isActive={currentTab === e.id}
+                      tabs={tabs}
+                      setTabs={setTabs}
+                      tabCount={tabCount}
+                      currentTab={currentTab}
+                      setCurrentTab={setCurrentTab}
+                    />
+                  </div>
+                ))}
+            </div>
             {/* Add new tab button */}
             <button
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-linear-to-r from-cyan-600 to-blue-600
-           hover:from-cyan-500 hover:to-blue-500 text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110 order-2 md:order-1"
+              className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 my-auto mb-4  rounded-full bg-linear-to-r from-cyan-600 to-blue-600
+           hover:from-cyan-500 hover:to-blue-500 text-white font-bold shadow-lg shadow-cyan-500/30 transition-all hover:scale-110 order-2 md:order-1 text-[1.5em] mr-3 "
               onClick={() =>
                 setComponentVisibility({
                   ...componentVisibility,

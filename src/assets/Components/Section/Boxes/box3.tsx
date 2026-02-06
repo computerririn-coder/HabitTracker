@@ -104,7 +104,7 @@ const Box3 = React.memo(
                       setTabs((prev) =>
                         prev.map((tabs, index) =>
                           index === currentTab
-                            ? { ...tabs, max: max - 1 }
+                            ? { ...tabs, max: max - 1 === 0 ? max : max - 1 }
                             : tabs
                         )
                       )
