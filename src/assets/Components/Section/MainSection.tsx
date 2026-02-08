@@ -24,7 +24,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProgressTracker from './Boxes/ProgressTracker.tsx';
 import Box1 from './Boxes/Box1.tsx';
 import Box2 from './Boxes/Box2.tsx';
-import Box3 from './Boxes/Box3.tsx';
+import Box3 from './Boxes/Boxes3.tsx';
 import Box4 from './Boxes/Box4.tsx';
 
 function MainSection() {
