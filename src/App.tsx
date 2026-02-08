@@ -15,7 +15,6 @@ function App() {
 
   return (
     <>
-    <Testing/>
       <NavigationBar />
       <TasksBar />
       {componentVisibility.achievementsVisibility && <Achievements />}
