@@ -67,7 +67,7 @@ function ProgressTracker({
 
       {/* Percentage text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span className="font-bold text-cyan-50 drop-shadow-lg text-[2em] xl:text-[3em]">
+        <span className="font-bold text-cyan-50 drop-shadow-lg text-[2em] xl:text-[2.0em] 2xl:mb-10">
           {percentage}%
         </span>
       </div>

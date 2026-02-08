@@ -26,7 +26,7 @@ const Box3 = React.memo(
       );
     }
     return (
-      <div className="flex flex-col gap-3 h-full p-3 rounded-lg border border-cyan-500/30 shadow-lg shadow-cyan-500/10 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950">
+      <div className="flex flex-col gap-3 h-full p-3 rounded-lg border border-cyan-500/30 shadow-lg shadow-cyan-500/10 bg-linear-to-br from-slate-800 via-slate-900 to-slate-950 bg">
         <div className="flex flex-row items-center gap-2 ">
           <h1 className="pb-1 text-xl text-cyan-300 uppercase tracking-wide border-b border-cyan-500/20 flex-1">
             Configuration
@@ -134,30 +134,32 @@ const Box3 = React.memo(
           </div>
 
           {/*HotKey & Total Completion*/}
-          <div className="flex  flex-col gap-5 mt-5 ">
-            <div className="flex flex-col items-center justify-center px-3 py-4 md:py-3 xl:py-2 rounded-lg border border-cyan-700/50 bg-slate-900/50 ">
-              <span className="mb-1 text-xl text-cyan-300 uppercase tracking-wide ">
+<div className="flex flex-col gap-5 2xl:flex-row">
+            <div className="flex flex-col border border-cyan-700/50 bg-slate-900/50 rounded-lg px-3 py-4 md:py-3 xl:py-2 w-full ">
+              <span className="text-xl text-cyan-300 uppercase tracking-wide">
                 Hotkey
               </span>
-              <span className="px-2 py-0.5 text-xl font-mono font-bold text-cyan-50 rounded border border-cyan-700/50 bg-slate-900/70">
+              <span className="text-xl font-mono font-bold text-cyan-50 rounded border border-cyan-700/50 bg-slate-900/70 px-2 py-0.5">
                 {currentSetting}
               </span>
             </div>
 
             {/*Total Completion */}
             <div
-              className={`flex flex-col items-center justify-center px-3 py-4 md:py-3 xl:py-2 rounded-lg transition-all duration-700 h-26 ${
+              className={`flex flex-col 2xl:flex-row rounded-lg transition-all duration-700 px-3 py-4 md:py-3 xl:py-2 ${
                 totalCompletionColor
                   ? 'border border-blue-400 shadow-2xl shadow-blue-500/80 scale-101 bg-blue-800/50'
                   : 'border border-cyan-700/50 bg-slate-900/50'
               }`}
             >
-              <span className="mb-1 text-xl text-cyan-300 uppercase tracking-wide text-center">
+              <div className='flex flex-col'>
+              <span className="text-xl text-cyan-300 uppercase tracking-wide">
                 Completions
               </span>
-              <span className="text-xl font-bold text-purple-400">
+              <span className="text-xl font-bold text-purple-400 text-center">
                 {completionCount}
               </span>
+            </div>
             </div>
           </div>
         </div>
