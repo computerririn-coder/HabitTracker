@@ -34,11 +34,11 @@ function Box2({ dateHistory }: Box2Props) {
       <h1 className="pb-3 text-sm text-cyan-300 uppercase tracking-wide 2xl:text-xl">
         Recent Completions
       </h1>
-      <div className="space-y-2">
+      <div className="space-y-2 bg-amber-800 ">
         {dateHistory.slice(0, sliceCount).map((e, i) => (
           <div
             key={i}
-            className={`flex items-center gap-3 p-3 md:p-6 rounded-lg border-l-4 border-y border-r border-cyan-700/50 bg-slate-900/40 ${colors[i % colors.length]} xl:h-1`}
+            className={`2xl:-mt-2 flex items-center gap-3 p-3 md:p-6 rounded-lg border-l-4 border-y border-r  border-cyan-700/50 bg-slate-900/40 ${colors[i % colors.length]} xl:h-1`}
           >
             <span className="min-w-4 text-xs font-semibold text-cyan-400 2xl:text-xl">
               #{i + 1}
