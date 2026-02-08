@@ -34,7 +34,7 @@ function Box2({ dateHistory }: Box2Props) {
       <h1 className="pb-3 text-sm text-cyan-300 uppercase tracking-wide 2xl:text-xl">
         Recent Completions
       </h1>
-      <div className="space-y-2 bg-amber-800 ">
+      <div className="space-y-2  ">
         {dateHistory.slice(0, sliceCount).map((e, i) => (
           <div
             key={i}
